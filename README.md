@@ -5,6 +5,7 @@ Recruitment website and job platform for Job Link Uganda. Built with Next.js (Ap
 - Strategy & SEO: [docs/01-discovery-seo-architecture.md](docs/01-discovery-seo-architecture.md)
 - Technical architecture: [docs/02-technical-architecture.md](docs/02-technical-architecture.md)
 - **Admin guide (start here if you manage the site):** [docs/03-admin-guide.md](docs/03-admin-guide.md)
+- **Deployment guide (hosting + domain):** [docs/04-deployment-guide.md](docs/04-deployment-guide.md)
 
 ## Local development
 
