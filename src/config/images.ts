@@ -1,0 +1,77 @@
+/**
+ * Illustrative stock photography (Unsplash License). Every entry was viewed
+ * before selection. These people are NOT Job Link Uganda staff, candidates or
+ * clients, and no location is our office; captions and alt text must never
+ * suggest otherwise. Replace with original photography when available.
+ */
+export type StockImage = {
+  /** images.unsplash.com base URL (no query string). */
+  src: string
+  width: number
+  height: number
+  alt: string
+  /** CSS object-position used when the image is cropped. */
+  focus?: string
+  credit: { name: string; url: string }
+}
+
+export const stockImages = {
+  waitress: {
+    src: 'https://images.unsplash.com/photo-1496811425508-6d7ebb7ff32c',
+    width: 4918,
+    height: 3376,
+    alt: 'A waitress in a white shirt, bow tie and brown apron, standing in a restaurant',
+    focus: '50% 30%',
+    credit: { name: 'Steven Cleghorn', url: 'https://unsplash.com/photos/psomVjxL29Y' },
+  },
+  chef: {
+    src: 'https://images.unsplash.com/photo-1731576089290-e6230a18dcb4',
+    width: 4000,
+    height: 6000,
+    alt: 'A young chef in a white jacket and apron working in a commercial kitchen',
+    focus: '50% 40%',
+    credit: { name: 'Martin Baron', url: 'https://unsplash.com/photos/9CEsgroCdBo' },
+  },
+  hotelHost: {
+    src: 'https://images.unsplash.com/photo-1591933320290-adfceefb40be',
+    width: 5760,
+    height: 3840,
+    alt: 'A man in a white kaftan carrying linen through a hotel restaurant and lounge',
+    focus: '55% 40%',
+    credit: { name: 'Nino Kojo', url: 'https://unsplash.com/photos/ktDSSPC2AEE' },
+  },
+  employersPlanning: {
+    src: 'https://images.unsplash.com/photo-1688372296394-f8c21c15ed65',
+    width: 7360,
+    height: 4912,
+    alt: 'Two businessmen reviewing printed plans together at a wooden table',
+    focus: '55% 30%',
+    credit: { name: 'Ali Mkumbwa', url: 'https://unsplash.com/photos/69I10EF57UY' },
+  },
+  jobSeeker: {
+    src: 'https://images.unsplash.com/photo-1666867540898-aaa1993ffabc',
+    width: 2000,
+    height: 2998,
+    alt: 'A smiling young woman in a light blue shirt and blue headscarf, arms folded',
+    focus: '50% 18%',
+    credit: { name: 'Raymond Owusu-Afriyie', url: 'https://unsplash.com/photos/VPvYUK2Iibo' },
+  },
+  conversation: {
+    src: 'https://images.unsplash.com/photo-1655720355810-fcdfd7a742b5',
+    width: 5568,
+    height: 3712,
+    alt: 'A woman and a man in conversation, seated in a bright office lounge',
+    focus: '50% 40%',
+    credit: { name: 'Iwaria Inc.', url: 'https://unsplash.com/photos/U7zb_4mTVPQ' },
+  },
+  teamDiscussion: {
+    src: 'https://images.unsplash.com/photo-1655720357872-ce227e4164ba',
+    width: 5568,
+    height: 3712,
+    alt: 'Three women discussing work around a laptop in an office lounge',
+    focus: '50% 45%',
+    credit: { name: 'Iwaria Inc.', url: 'https://unsplash.com/photos/M7ALc3UuX_g' },
+  },
+} satisfies Record<string, StockImage>
+
+export type StockImageKey = keyof typeof stockImages

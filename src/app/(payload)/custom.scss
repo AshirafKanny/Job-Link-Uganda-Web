@@ -1,0 +1,31 @@
+// Job Link Uganda admin branding. Payload's own variables handle light/dark
+// surfaces; only brand accents are overridden here.
+:root {
+  --jl-red: #d91519;
+  --jl-red-dark: #b01116;
+  --jl-yellow: #fec106;
+}
+
+// Primary actions in brand red (both themes).
+.btn--style-primary {
+  --bg-color: var(--jl-red);
+  --hover-bg: var(--jl-red-dark);
+  --color: #fff;
+  --hover-color: #fff;
+}
+
+// Focus rings and active states in brand red.
+*:focus-visible {
+  outline-color: var(--jl-red);
+}
+
+.nav__link.active,
+.nav__link[aria-current='page'] {
+  box-shadow: inset 3px 0 0 var(--jl-red);
+}
+
+// Login screen: a little more presence for the logo.
+.login__brand,
+.template-minimal__wrap .graphic-logo {
+  margin-bottom: 1.5rem;
+}

@@ -1,0 +1,398 @@
+@import 'tailwindcss';
+
+/*
+ * Job Link Uganda design tokens.
+ * Source of truth: the official logo (assets/brand/). Palette follows the
+ * Ugandan flag — black, yellow, red — used sparingly on generous neutrals.
+ *
+ * Contrast (WCAG 2.2):
+ *   brand-red      #D91519 on white   ≈ 5.2:1  → text, links, buttons
+ *   brand-red-dark #B01116 on white   ≈ 7.2:1  → hover, small text
+ *   brand-yellow   #FEC106 on white   ≈ 1.6:1  → NEVER text on light; accents only
+ *   brand-yellow on brand-black       ≈ 12:1   → fine for text on dark sections
+ * Components use these semantic tokens, never raw hex values.
+ */
+@theme {
+  --color-brand-red: #d91519;
+  --color-brand-red-dark: #b01116;
+  --color-brand-yellow: #fec106;
+  --color-brand-black: #0d0d0d;
+
+  --color-ink: #141414;
+  --color-ink-muted: #50535b;
+  --color-ink-subtle: #6b6e76;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f6f5f1;
+  --color-surface-sunken: #eeece6;
+  --color-line: #e3e1da;
+  --color-line-strong: #cbc8bf;
+
+  --color-primary: var(--color-brand-red);
+  --color-primary-hover: var(--color-brand-red-dark);
+  --color-accent: var(--color-brand-yellow);
+
+  --color-success: #166534;
+  --color-success-soft: #e8f3ec;
+  --color-warning: #8a4b00;
+  --color-warning-soft: #fdf3e1;
+  --color-danger: #b91c1c;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-display: var(--font-montserrat), var(--font-sans);
+
+  --radius-control: 0.25rem;
+  --radius-card: 0.375rem;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-enter: enter 0.8s var(--ease-out-soft) both;
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@layer base {
+  html {
+    /* Clip (not hide) so animated elements can never cause sideways scroll; sticky still works. */
+    overflow-x: clip;
+    color: var(--color-ink);
+    background: var(--color-surface);
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    overflow-x: clip;
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-brand-red);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--color-brand-yellow);
+    color: var(--color-brand-black);
+  }
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+@utility container-page {
+  width: 100%;
+  max-width: 78rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  @media (width >= 40rem) {
+    padding-inline: 2rem;
+  }
+}
+
+/* Brand device from the logo's tri-colour rule: black · yellow · red. */
+@utility flag-bar {
+  background: linear-gradient(
+    to right,
+    var(--color-brand-black) 0 33.33%,
+    var(--color-brand-yellow) 33.33% 66.66%,
+    var(--color-brand-red) 66.66% 100%
+  );
+}
+
+/* ── Motion: load entrance ───────────────────────────────── */
+@keyframes hero-settle {
+  from {
+    transform: scale(1.07);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Slow settle-in of the home hero photograph. */
+  .hero-photo {
+    animation: hero-settle 2.4s var(--ease-out-soft) both;
+  }
+
+  .enter {
+    animation: var(--animate-enter);
+    animation-delay: calc(var(--enter-step, 0) * 90ms);
+  }
+
+}
+
+/* ── Motion: scroll animations (AOS-style) ────────────────────
+ * Usage: data-aos="fade-up" [data-aos-delay="100"] [data-aos-duration="800"]
+ * Animations: fade, fade-up, fade-down, fade-left, fade-right, zoom-in,
+ * zoom-out, slide-up, image-reveal.
+ * Elements are hidden only once the observer is running (html.aos-ready),
+ * so content stays visible without JavaScript; reduced-motion users get no
+ * animation at all. See src/components/motion/ScrollAnimations.tsx.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .aos-ready [data-aos] {
+    transition-property: opacity, transform;
+    transition-duration: var(--aos-duration, 800ms);
+    transition-delay: var(--aos-delay, 0ms);
+    transition-timing-function: var(--ease-out-soft);
+  }
+
+  .aos-ready [data-aos]:not([data-aos-in]) {
+    opacity: 0;
+  }
+  .aos-ready [data-aos='fade-up']:not([data-aos-in]) {
+    transform: translate3d(0, 36px, 0);
+  }
+  .aos-ready [data-aos='fade-down']:not([data-aos-in]) {
+    transform: translate3d(0, -36px, 0);
+  }
+  /* Sideways motion only where there is room for it; phones get a gentle rise instead. */
+  .aos-ready [data-aos='fade-left']:not([data-aos-in]),
+  .aos-ready [data-aos='fade-right']:not([data-aos-in]) {
+    transform: translate3d(0, 28px, 0);
+  }
+  @media (width >= 48rem) {
+    .aos-ready [data-aos='fade-left']:not([data-aos-in]) {
+      transform: translate3d(48px, 0, 0);
+    }
+    .aos-ready [data-aos='fade-right']:not([data-aos-in]) {
+      transform: translate3d(-48px, 0, 0);
+    }
+  }
+  .aos-ready [data-aos='zoom-in']:not([data-aos-in]) {
+    transform: scale(0.92);
+  }
+  .aos-ready [data-aos='zoom-out']:not([data-aos-in]) {
+    transform: scale(1.08);
+  }
+  .aos-ready [data-aos='slide-up']:not([data-aos-in]) {
+    opacity: 1;
+    transform: translate3d(0, 100%, 0);
+  }
+
+  /* Image reveal: the frame fades in while the photo settles from a slight zoom. */
+  .aos-ready [data-aos='image-reveal'] img {
+    transition: transform 1.4s var(--ease-out-soft);
+    transition-delay: var(--aos-delay, 0ms);
+  }
+  .aos-ready [data-aos='image-reveal']:not([data-aos-in]) img {
+    transform: scale(1.12);
+  }
+
+  [data-aos][data-aos-in] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Mobile menu ─────────────────────────────────────────────
+ * Hamburger bars morph into an X; the panel opens as a circle expanding out
+ * of the button, then links cascade in. Closing reverses it. The panel stays
+ * mounted (inert when closed) so it can animate out.
+ */
+.menu-toggle__bars {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 14px;
+}
+.menu-toggle__bars > span {
+  position: absolute;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  border-radius: 2px;
+  background: currentColor;
+  transition:
+    transform 0.45s var(--ease-out-soft),
+    opacity 0.25s ease,
+    top 0.3s var(--ease-out-soft) 0.15s,
+    width 0.3s var(--ease-out-soft);
+}
+.menu-toggle__bars > span:nth-child(1) {
+  top: 0;
+}
+.menu-toggle__bars > span:nth-child(2) {
+  top: 6px;
+  width: 70%;
+}
+.menu-toggle__bars > span:nth-child(3) {
+  top: 12px;
+}
+.menu-toggle:hover .menu-toggle__bars > span:nth-child(2) {
+  width: 100%;
+}
+/* Open: bars first slide to the centre, then rotate into an X. */
+.menu-toggle[data-open] .menu-toggle__bars > span {
+  top: 6px;
+  transition:
+    top 0.2s var(--ease-out-soft),
+    transform 0.45s var(--ease-out-soft) 0.18s,
+    opacity 0.2s ease,
+    width 0.3s var(--ease-out-soft);
+}
+.menu-toggle[data-open] .menu-toggle__bars > span:nth-child(1) {
+  transform: rotate(45deg);
+}
+.menu-toggle[data-open] .menu-toggle__bars > span:nth-child(2) {
+  opacity: 0;
+  width: 0;
+}
+.menu-toggle[data-open] .menu-toggle__bars > span:nth-child(3) {
+  transform: rotate(-45deg);
+}
+.menu-toggle[data-open] {
+  border-color: var(--color-ink);
+}
+
+.menu-panel {
+  /* Circle origin sits on the toggle button, just above the panel. */
+  --menu-origin: calc(100% - 2.6rem) -1.9rem;
+  clip-path: circle(0% at var(--menu-origin));
+  visibility: hidden;
+  transition:
+    clip-path 0.55s cubic-bezier(0.65, 0, 0.35, 1) 0.12s,
+    visibility 0s linear 0.67s;
+}
+.menu-panel[data-open] {
+  clip-path: circle(150% at var(--menu-origin));
+  visibility: visible;
+  transition:
+    clip-path 0.7s cubic-bezier(0.65, 0, 0.35, 1),
+    visibility 0s;
+}
+
+.menu-panel__rule {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.menu-panel[data-open] .menu-panel__rule {
+  transform: scaleX(1);
+  transition: transform 0.8s var(--ease-out-soft) 0.25s;
+}
+
+.menu-panel__item {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  /* Closing: items leave quickly, together, before the circle shrinks. */
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+.menu-panel[data-open] .menu-panel__item {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.5s var(--ease-out-soft),
+    transform 0.6s var(--ease-out-soft);
+  transition-delay: calc(0.22s + var(--i, 0) * 0.055s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-toggle__bars > span,
+  .menu-panel,
+  .menu-panel__rule,
+  .menu-panel__item {
+    transition: none !important;
+  }
+  .menu-panel {
+    clip-path: none;
+  }
+  .menu-panel__item,
+  .menu-panel__rule {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Long-form content (articles, service pages) ───────────── */
+@utility prose-content {
+  color: var(--color-ink);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+
+  & > * + * {
+    margin-top: 1.1em;
+  }
+  & h2 {
+    margin-top: 2em;
+    font-size: 1.6rem;
+    font-weight: 800;
+  }
+  & h3 {
+    margin-top: 1.6em;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+  & h2 + *,
+  & h3 + * {
+    margin-top: 0.6em;
+  }
+  & a {
+    color: var(--color-brand-red-dark);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+  & a:hover {
+    text-decoration-thickness: 2px;
+  }
+  & ul,
+  & ol {
+    padding-left: 1.4em;
+  }
+  & ul {
+    list-style: disc;
+  }
+  & ol {
+    list-style: decimal;
+  }
+  & li + li {
+    margin-top: 0.4em;
+  }
+  & li::marker {
+    color: var(--color-brand-red);
+  }
+  & strong {
+    font-weight: 650;
+  }
+  & blockquote {
+    border-left: 3px solid var(--color-brand-yellow);
+    padding-left: 1.1em;
+    color: var(--color-ink-muted);
+  }
+}

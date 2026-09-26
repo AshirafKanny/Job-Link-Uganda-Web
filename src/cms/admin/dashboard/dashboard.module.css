@@ -1,0 +1,500 @@
+/*
+ * Admin dashboard. Uses Payload's theme variables for surfaces and text so it
+ * works in light and dark mode, plus Job Link brand colours for accents.
+ */
+.root {
+  --jl-red: #d91519;
+  --jl-red-dark: #b01116;
+  --jl-yellow: #fec106;
+  --jl-black: #0d0d0d;
+  /* Neutral mark colour that stays visible in both themes. */
+  --jl-ink-mark: #1f1f1f;
+  --surface: var(--theme-elevation-0);
+  --surface-2: var(--theme-elevation-50);
+  --line: var(--theme-elevation-100);
+  --line-strong: var(--theme-elevation-150);
+  --ink: var(--theme-text);
+  --ink-2: var(--theme-elevation-600);
+  --ink-3: var(--theme-elevation-500);
+  --good: #15803d;
+  --bad: #b91c1c;
+  margin-bottom: 2.5rem;
+  color: var(--ink);
+}
+
+:global([data-theme='dark']) .root {
+  --jl-ink-mark: #e5e5e5;
+  --good: #4ade80;
+  --bad: #f87171;
+}
+
+/* ── Header ──────────────────────────────────── */
+.hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--jl-black);
+  color: #fff;
+  padding: 2rem 2rem 2.2rem;
+  margin-bottom: 1.75rem;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--jl-black) 0 33.3%, var(--jl-yellow) 33.3% 66.6%, var(--jl-red) 66.6%);
+}
+.heroInner {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--jl-yellow);
+  margin: 0;
+}
+.eyebrow::before {
+  content: '';
+  width: 1.4rem;
+  height: 2px;
+  background: var(--jl-yellow);
+}
+.greeting {
+  margin: 0.6rem 0 0;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+.heroSub {
+  margin: 0.4rem 0 0;
+  color: rgb(255 255 255 / 0.72);
+  font-size: 0.95rem;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.btn,
+.btnGhost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.6rem;
+  padding: 0 1.1rem;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.btn {
+  background: var(--jl-red);
+  color: #fff;
+}
+.btn:hover {
+  background: var(--jl-red-dark);
+}
+.btnGhost {
+  border: 1px solid rgb(255 255 255 / 0.35);
+  color: #fff;
+}
+.btnGhost:hover {
+  border-color: #fff;
+}
+
+/* ── Notices ─────────────────────────────────── */
+.notice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--jl-yellow);
+  border-radius: 6px;
+  background: var(--surface);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.75rem;
+}
+.notice strong {
+  display: block;
+}
+.notice span {
+  color: var(--ink-2);
+  font-size: 0.9rem;
+}
+.textLink {
+  color: var(--jl-red);
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+:global([data-theme='dark']) .textLink {
+  color: #ff6b6e;
+}
+.textLink:hover {
+  text-decoration: underline;
+}
+
+/* ── Sections ────────────────────────────────── */
+.section {
+  margin-top: 2rem;
+}
+.sectionHead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.9rem;
+}
+.sectionTitle {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+.range {
+  display: inline-flex;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.range a {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  text-decoration: none;
+}
+.range a + a {
+  border-left: 1px solid var(--line-strong);
+}
+.range a[aria-current='true'] {
+  background: var(--jl-black);
+  color: #fff;
+}
+:global([data-theme='dark']) .range a[aria-current='true'] {
+  background: #fff;
+  color: var(--jl-black);
+}
+
+/* ── Stat tiles ──────────────────────────────── */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 1rem;
+}
+.tile {
+  position: relative;
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  padding: 1.1rem 1.2rem 1.2rem;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.2s;
+}
+a.tile:hover {
+  border-color: var(--ink-3);
+  transform: translateY(-2px);
+}
+.tile::before {
+  content: '';
+  position: absolute;
+  left: 1.2rem;
+  top: 0;
+  width: 1.6rem;
+  height: 3px;
+  background: var(--accent, var(--jl-red));
+}
+.tileLabel {
+  margin: 0.4rem 0 0;
+  font-size: 0.85rem;
+  color: var(--ink-2);
+}
+.tileValue {
+  margin: 0.35rem 0 0;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+.tileMeta {
+  margin: 0.35rem 0 0;
+  font-size: 0.8rem;
+  color: var(--ink-3);
+}
+.up {
+  color: var(--good);
+  font-weight: 700;
+}
+.down {
+  color: var(--bad);
+  font-weight: 700;
+}
+
+/* ── Cards & grids ───────────────────────────── */
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.card {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  padding: 1.25rem 1.3rem;
+  min-width: 0;
+}
+.cardHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.cardTitle {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+}
+.cardSub {
+  margin: 0.2rem 0 0;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+}
+
+/* ── Bar lists ───────────────────────────────── */
+.bars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+.barRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.3rem 1rem;
+  align-items: baseline;
+}
+.barLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+a.barLabel:hover {
+  text-decoration: underline;
+}
+.barValue {
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.barValue small {
+  font-weight: 400;
+  color: var(--ink-3);
+}
+.barTrack {
+  grid-column: 1 / -1;
+  height: 8px;
+  border-radius: 0 4px 4px 0;
+  background: var(--surface-2);
+}
+.barFill {
+  height: 100%;
+  border-radius: 0 4px 4px 0;
+  background: var(--bar, var(--jl-red));
+  min-width: 2px;
+}
+
+/* ── Lists ───────────────────────────────────── */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--line);
+}
+.list li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+.listMain {
+  min-width: 0;
+}
+.listMain a {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+.listMain a:hover {
+  text-decoration: underline;
+}
+.listMain span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+}
+.badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 1px solid var(--line-strong);
+  color: var(--ink-2);
+}
+.badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dot, var(--ink-3));
+}
+.empty {
+  margin: 0;
+  padding: 1.5rem 0.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--ink-3);
+}
+
+/* ── Footer note ─────────────────────────────── */
+.privacy {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+}
+.privacy svg {
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+/* ── Chart ───────────────────────────────────── */
+.chartWrap {
+  position: relative;
+}
+.chartSvg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  touch-action: pan-y;
+}
+.chartSvg:focus-visible {
+  outline: 2px solid var(--jl-red);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+.tooltip {
+  position: absolute;
+  top: 0;
+  pointer-events: none;
+  min-width: 9.5rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background: var(--surface);
+  box-shadow: 0 6px 20px rgb(0 0 0 / 0.12);
+  padding: 0.6rem 0.75rem;
+  font-size: 0.8rem;
+  transform: translateX(-50%);
+}
+.tooltipDate {
+  margin: 0 0 0.35rem;
+  color: var(--ink-3);
+}
+.tooltipRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.15rem 0;
+}
+.tooltipRow strong {
+  font-size: 0.95rem;
+}
+.key {
+  width: 12px;
+  height: 2px;
+  background: var(--jl-red);
+  border-radius: 2px;
+}
+.keyNone {
+  width: 12px;
+}
+.tableToggle {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+}
+.tableToggle summary {
+  cursor: pointer;
+  color: var(--ink-2);
+  font-weight: 600;
+}
+.table {
+  width: 100%;
+  margin-top: 0.6rem;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+.table th,
+.table td {
+  padding: 0.35rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+  text-align: right;
+}
+.table th:first-child,
+.table td:first-child {
+  text-align: left;
+}
+.tableScroll {
+  max-height: 16rem;
+  overflow: auto;
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding: 1.5rem 1.25rem 1.8rem;
+  }
+  .grid2 {
+    grid-template-columns: 1fr;
+  }
+}
