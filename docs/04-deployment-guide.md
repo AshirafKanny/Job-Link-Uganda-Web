@@ -44,7 +44,14 @@ git push
 3. Open **Connection details** and turn on **Connection pooling**. The connection string will then contain `-pooler`.
 4. Copy the connection string. It looks like:
    `postgresql://USER:PASSWORD@ep-xxxx-pooler.eu-central-1.aws.neon.tech/neondb?sslmode=require`
-5. Keep it somewhere private. **This is your `DATABASE_URL`.** Never share it or put it in code.
+5. In the string, change `sslmode=require` to `sslmode=verify-full`. That's the strictest encryption setting, and the database driver will require it explicitly in its next version.
+6. Keep it somewhere private. **This is your `DATABASE_URL`.** Never share it or put it in code.
+
+> **Status (27 Sep 2026): done.** Neon project **"Job Link Uganda"** (`old-mud-30574190`, Frankfurt, Postgres 18, branch `production`) is set up. All tables are created and the launch content is loaded. To print the connection string again on this computer:
+> ```bash
+> npx neon@latest connection-string production --project-id old-mud-30574190 --pooled
+> ```
+> Or use **Connect** in the Neon console, with pooling on.
 
 ---
 
@@ -129,6 +136,7 @@ The live database is **new and empty**. Your local data (your admin account, the
    $env:DATABASE_URL="<your Neon connection string>"; npm run seed
    ```
    You should see `Seed complete: 23 created`. Close that terminal afterwards so the live database address isn't left set.
+   **Already done on 27 Sep 2026.** Skip this unless you create a new database.
 2. Open `https://<your-vercel-address>/admin` and **create your admin account**. The first account becomes the administrator.
 3. Fill in **Site Settings** (phone, email, WhatsApp, social links).
 4. Add your **real vacancies** under Jobs.
