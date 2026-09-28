@@ -15,7 +15,7 @@ import { buildMetadata } from '@/lib/seo/metadata'
 export const metadata: Metadata = buildMetadata({
   title: 'About Us: Recruitment Agency in Kampala',
   description:
-    'Job Link Uganda is a recruitment agency connecting employers in Kampala with suitable staff and job seekers with genuine vacancies, with a focus on hospitality and restaurant recruitment.',
+    'Job Link Uganda is a Kampala recruitment agency connecting employers with suitable staff and job seekers with genuine vacancies, focused on hospitality.',
   path: routes.about(),
 })
 

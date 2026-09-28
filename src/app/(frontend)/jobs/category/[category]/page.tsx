@@ -8,7 +8,7 @@ import { redirectOrNotFound } from '@/lib/cms-redirect'
 import { loadJobBrowseData } from '@/lib/jobs-browse'
 import { parseJobFilters, type SearchParams } from '@/lib/jobs-search'
 import { routes } from '@/lib/routes'
-import { hasEditorialContent, isJobHubIndexable } from '@/lib/seo/indexation'
+import { isJobHubIndexable } from '@/lib/seo/indexation'
 import { buildMetadata } from '@/lib/seo/metadata'
 
 type Props = { params: Promise<{ category: string }>; searchParams: Promise<SearchParams> }
@@ -27,7 +27,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
       category.seo.description ??
       `Current ${category.name.toLowerCase()} job vacancies in Kampala and Uganda, recruited by Job Link Uganda. See the requirements and how to apply.`,
     path: routes.jobCategory(category.slug),
-    indexable: page === 1 && isJobHubIndexable({ liveJobs, hasEditorialContent: hasEditorialContent(category.intro) }),
+    indexable: page === 1 && isJobHubIndexable(liveJobs),
   })
 }
 

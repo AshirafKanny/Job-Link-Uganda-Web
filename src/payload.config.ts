@@ -67,6 +67,11 @@ if (process.env.S3_BUCKET) {
       config: {
         region: process.env.S3_REGION || 'auto',
         endpoint: process.env.S3_ENDPOINT || undefined,
+        // Cloudflare R2 compatibility (also valid for AWS S3): path-style URLs, and only
+        // the checksums the operation requires (newer SDK defaults add headers R2 may reject).
+        forcePathStyle: true,
+        requestChecksumCalculation: 'WHEN_REQUIRED',
+        responseChecksumValidation: 'WHEN_REQUIRED',
         credentials: {
           accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
           secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',

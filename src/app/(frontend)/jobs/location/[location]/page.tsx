@@ -8,7 +8,7 @@ import { redirectOrNotFound } from '@/lib/cms-redirect'
 import { loadJobBrowseData } from '@/lib/jobs-browse'
 import { parseJobFilters, type SearchParams } from '@/lib/jobs-search'
 import { routes } from '@/lib/routes'
-import { hasEditorialContent, isJobHubIndexable } from '@/lib/seo/indexation'
+import { isJobHubIndexable } from '@/lib/seo/indexation'
 import { buildMetadata } from '@/lib/seo/metadata'
 
 type Props = { params: Promise<{ location: string }>; searchParams: Promise<SearchParams> }
@@ -26,9 +26,9 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   const liveJobs = browse.locationCounts[location.slug] ?? 0
   return buildMetadata({
     title: `Jobs in ${location.name}: Current Vacancies`,
-    description: `Current job vacancies in ${location.name}, Uganda, recruited by Job Link Uganda, including hospitality and restaurant roles. See requirements and how to apply.`,
+    description: `Current job vacancies in ${location.name}, Uganda, recruited by Job Link Uganda, including hospitality roles. See requirements and how to apply.`,
     path: routes.jobLocation(location.slug),
-    indexable: page === 1 && isJobHubIndexable({ liveJobs, hasEditorialContent: hasEditorialContent(location.intro) }),
+    indexable: page === 1 && isJobHubIndexable(liveJobs),
   })
 }
 

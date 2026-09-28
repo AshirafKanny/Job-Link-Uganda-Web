@@ -12,7 +12,7 @@ import { buildMetadata } from '@/lib/seo/metadata'
 export const metadata: Metadata = buildMetadata({
   title: 'How Our Recruitment Process Works',
   description:
-    'A transparent explanation of how Job Link Uganda recruits: the process for employers, the process for job seekers, what each side can expect, and how to recognise legitimate recruitment.',
+    'How Job Link Uganda recruits: the process for employers and job seekers, what each side can expect, and how to recognise legitimate recruitment.',
   path: routes.howItWorks(),
 })
 

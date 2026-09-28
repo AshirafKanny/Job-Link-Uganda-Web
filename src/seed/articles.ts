@@ -100,7 +100,7 @@ Read the vacancy carefully and follow its application instructions exactly. If i
     meta: {
       title: 'Restaurant Job Interview Questions and Answers',
       description:
-        'Common interview questions for waiter, waitress and restaurant jobs, what employers want to hear, and how to prepare. Practical advice for job seekers in Uganda.',
+        'Common interview questions for waiter, waitress and restaurant jobs, what employers want to hear, and how to prepare. Practical advice for Uganda.',
     },
     body: `
 Restaurant interviews are usually short and practical. The interviewer wants to know whether you can serve guests well, work as part of a team, and be relied on for your shifts. Preparing answers to the common questions below will help you speak with confidence.
@@ -162,7 +162,7 @@ A genuine employer or recruiter will explain the job, the pay and the working ho
     meta: {
       title: 'How to Write a Job Description for Restaurant Staff',
       description:
-        'A practical guide for restaurant owners and managers in Uganda: how to write a job description for waiters, cooks and supervisors that attracts suitable candidates.',
+        'A practical guide for restaurant owners and managers in Uganda: how to write a job description that attracts suitable waiters, cooks and supervisors.',
     },
     body: `
 When a vacancy says little more than "Waitress needed, apply now", it attracts many applications and few suitable ones. A clear job description does part of the screening for you: the right people recognise themselves in it, and the wrong ones decide not to apply.

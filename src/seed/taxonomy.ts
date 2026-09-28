@@ -20,7 +20,7 @@ export const seedJobCategories: SeedJobCategory[] = [
     meta: {
       title: 'Hospitality Jobs in Uganda',
       description:
-        'Hospitality job vacancies in Kampala and Uganda: restaurant, hotel, kitchen, bar and café roles recruited by Job Link Uganda. See requirements and how to apply.',
+        'Hospitality jobs in Kampala and Uganda: restaurant, hotel, kitchen, bar and café vacancies recruited by Job Link Uganda. See requirements and how to apply.',
     },
     intro: `Hospitality jobs cover everyone who looks after guests: waiters and waitresses, baristas and bartenders, chefs and kitchen staff, hotel receptionists, housekeeping teams and the supervisors who run each shift.
 
@@ -34,7 +34,7 @@ Most hospitality roles involve shift work, including evenings, weekends and publ
     meta: {
       title: 'Restaurant Jobs in Kampala and Uganda',
       description:
-        'Restaurant jobs in Kampala: waiter, waitress, host, cashier and restaurant supervisor vacancies recruited by Job Link Uganda. See requirements and how to apply.',
+        'Restaurant jobs in Kampala: waiter, waitress, host, cashier and supervisor vacancies recruited by Job Link Uganda. See requirements and how to apply.',
     },
     intro: `Restaurant jobs include waiters and waitresses, hosts and hostesses, cashiers and restaurant supervisors. Service staff take orders, serve food and drinks, and make sure guests are looked after from arrival to payment.
 

@@ -25,7 +25,7 @@ export const revalidate = 600
 export const metadata: Metadata = buildMetadata({
   title: 'Recruitment Agency in Kampala, Uganda | Job Link Uganda',
   description:
-    'Job Link Uganda helps businesses find suitable, screened staff and helps job seekers reach genuine vacancies. Specialists in hospitality and restaurant recruitment in Kampala.',
+    'Job Link Uganda helps businesses hire screened staff and helps job seekers find genuine vacancies. Specialists in hospitality recruitment in Kampala.',
   path: routes.home(),
   absoluteTitle: true,
 })

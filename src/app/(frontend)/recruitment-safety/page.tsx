@@ -11,7 +11,7 @@ import { buildMetadata } from '@/lib/seo/metadata'
 export const metadata: Metadata = buildMetadata({
   title: 'How to Recognise a Genuine Job Offer',
   description:
-    'Practical checks to tell a genuine job offer from a recruitment scam in Uganda: warning signs, how to verify a recruiter, protecting your documents and what to do if something seems wrong.',
+    'Practical checks to tell a genuine job offer from a recruitment scam in Uganda: warning signs, verifying a recruiter and protecting your documents.',
   path: routes.recruitmentSafety(),
 })
 

@@ -472,6 +472,8 @@ These refinements were made while building the foundation. Details and reasons a
 | 2026-09-25 | FAQ schema | FAQPage where a visible FAQ exists | Not emitted | Brief: no FAQ schema just because FAQs exist; Google limits FAQ rich results to authoritative sites |
 | 2026-09-25 | Location pages | `/locations/[city]` | Not built yet; Kampala served by `/jobs/location/kampala` | Brief: start with Kampala and add dedicated pages only with genuine local activity |
 | 2026-09-25 | Hub indexation | Indexable with ≥1 live job **or** unique content | "Unique content" = CMS intro of ≥ 280 characters | Prevents short stub intros from getting empty hubs indexed |
+| 2026-09-28 | Hub indexation (revised) | ≥1 live job or ≥280-character intro | **≥1 live job only** (docs/05-seo-audit.md) | A job listing page with no listings is a soft-404 / thin-page risk whatever its intro says; hubs re-enter the index automatically when a vacancy is published |
+| 2026-09-28 | Sitemap lastmod | Accurate lastmod | Omitted where no real edit date exists | Static pages reported the request time; Google ignores lastmod on sites where it is unreliable |
 
 ---
 

@@ -3,24 +3,21 @@
  * and duplicate filter pages out of the index (see discovery doc, Step 7).
  */
 
-/** An intro shorter than this is not substantial enough to justify indexing an empty hub. */
-export const MIN_EDITORIAL_INTRO_LENGTH = 280
-
-export function hasEditorialContent(intro: string | null | undefined): boolean {
-  return (intro?.trim().length ?? 0) >= MIN_EDITORIAL_INTRO_LENGTH
-}
-
 /** Category × location pages are only worth indexing with real inventory. */
 export const MIN_JOBS_FOR_COMBINATION_PAGE = 3
 
 /** Query parameters that only refine /jobs. Any of them makes the page noindex. */
 export const LISTING_FILTER_PARAMS = ['q', 'type', 'sort', 'page', 'category', 'location'] as const
 
-type HubInput = { liveJobs: number; hasEditorialContent: boolean }
-
-/** /jobs/category/[c] and /jobs/location/[l] */
-export function isJobHubIndexable({ liveJobs, hasEditorialContent }: HubInput): boolean {
-  return liveJobs > 0 || hasEditorialContent
+/**
+ * /jobs/category/[c] and /jobs/location/[l]: indexable only while they list
+ * at least one open vacancy. A job listing page with no listings is what
+ * Google treats as a soft 404 / thin page, however good its intro text; the
+ * page still renders (and is linked) for visitors, just noindex and out of
+ * the sitemap until a vacancy is published.
+ */
+export function isJobHubIndexable(liveJobs: number): boolean {
+  return liveJobs > 0
 }
 
 /** /jobs/category/[c]/location/[l] */

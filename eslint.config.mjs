@@ -10,7 +10,7 @@ const eslintConfig = [
     },
   },
   {
-    ignores: ['.next/', '.dev-db/', 'node_modules/', 'src/payload-types.ts', 'src/app/(payload)/admin/importMap.js', 'next-env.d.ts'],
+    ignores: ['.next/', '.dev-db/', 'node_modules/', 'src/payload-types.ts', 'src/migrations/', 'src/app/(payload)/admin/importMap.js', 'next-env.d.ts'],
   },
 ]
 

@@ -88,11 +88,7 @@ git push
 1. Go to **https://vercel.com**, sign up **with your GitHub account**, and choose the **Pro** plan.
 2. **Add New → Project → Import** your `Job-Link-Uganda-Web` repository.
 3. Framework preset: **Next.js** (detected automatically).
-4. Under **Build and Output Settings**, override the **Build Command** with:
-   ```
-   npm run ci
-   ```
-   This applies database migrations first and then builds the site, so the live database always matches the code.
+4. **Build command: nothing to do.** The repository's `vercel.json` already sets it to `npm run ci`, which applies database migrations first and then builds the site, so the live database always matches the code. Leave Vercel's build settings on their defaults.
 5. Open **Environment Variables** and add these. Use real values, not the examples:
 
 | Name | Value |
@@ -118,7 +114,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
 6. Click **Deploy** and wait a few minutes.
-7. In **Project → Settings → Functions**, set the **Function Region** to **Frankfurt (fra1)**, the same region as the database, so pages load faster. Then **redeploy** (Deployments → ⋯ → Redeploy).
+7. **Region: nothing to do.** `vercel.json` pins the server region to **Frankfurt (fra1)**, next to the database. You can confirm it under **Project → Settings → Functions**.
 
 When it's done, Vercel gives you an address like `https://job-link-uganda-web.vercel.app`. Your site is live there.
 
@@ -215,7 +211,7 @@ In Vercel, open **Deployments**, find the last good one, and choose **⋯ → Pr
 - [ ] Neon database created, pooled connection string saved
 - [ ] R2 bucket and API token created
 - [ ] Turnstile widget created
-- [ ] Vercel project deployed with all environment variables, build command `npm run ci`, region Frankfurt
+- [ ] Vercel project deployed with all environment variables (build command and Frankfurt region come from `vercel.json`)
 - [ ] Launch content seeded; admin account created; Site Settings filled in
 - [ ] Domain bought and connected; `NEXT_PUBLIC_SITE_URL` updated; redeployed
 - [ ] Content verified, then `SITE_INDEXABLE=true`, redeployed, and sitemap submitted to Google

@@ -20,7 +20,8 @@
     "seed": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/seed.ts",
     "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
     "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
-    "ci": "cross-env NODE_OPTIONS=--no-deprecation payload migrate && npm run build"
+    "ci": "cross-env NODE_OPTIONS=--no-deprecation payload migrate && npm run build",
+    "seo:update-meta": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/update-seo-meta.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.90.2",
@@ -58,6 +59,6 @@
     "vitest": "5.0.1"
   },
   "engines": {
-    "node": ">=20.9.0"
+    "node": "22.x"
   }
 }

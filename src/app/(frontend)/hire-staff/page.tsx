@@ -15,7 +15,7 @@ type Props = { searchParams: Promise<{ service?: string | string[] }> }
 export const metadata: Metadata = buildMetadata({
   title: 'Request Staff for Your Business',
   description:
-    'Tell Job Link Uganda which staff your business needs. Send the roles, number of people and start date, and our recruitment team will contact you to discuss your requirements.',
+    'Tell Job Link Uganda which staff your business needs: the roles, how many people and when. Our recruitment team will contact you to discuss the details.',
   path: routes.hireStaff(),
 })
 

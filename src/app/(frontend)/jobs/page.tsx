@@ -19,7 +19,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   return buildMetadata({
     title: 'Jobs in Uganda: Current Vacancies',
     description:
-      'Browse current job vacancies in Kampala and Uganda from Job Link Uganda, including hospitality, restaurant and hotel jobs. Every listing shows the requirements and how to apply.',
+      'Current job vacancies in Kampala and across Uganda, including hospitality, restaurant and hotel jobs. Each listing shows the requirements and how to apply.',
     path: routes.jobs(),
     // Searches, filters and deeper pages are noindex and canonicalise to /jobs.
     indexable: !isRefinedListing(params),

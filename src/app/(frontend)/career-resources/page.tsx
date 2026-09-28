@@ -19,7 +19,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   return buildMetadata({
     title: 'Career Advice: CVs, Interviews and Job Search',
     description:
-      'Practical career advice for job seekers in Uganda: writing a CV, preparing for interviews, hospitality careers, finding genuine jobs and avoiding recruitment scams. Plus hiring guides for employers.',
+      'Practical career advice for job seekers in Uganda: CV writing, interview preparation, hospitality careers and avoiding scams, plus hiring guides.',
     path: routes.careerResources(),
     indexable: page === 1,
   })

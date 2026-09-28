@@ -45,6 +45,14 @@ export function ScrollAnimations() {
     }
 
     const scan = () => document.querySelectorAll<HTMLElement>('[data-aos]').forEach(prepare)
+
+    // Content already on screen when the page loads is shown as-is, not hidden
+    // and re-animated: hiding it would flash content and delay Largest
+    // Contentful Paint. Only content the visitor scrolls to animates.
+    document.querySelectorAll<HTMLElement>('[data-aos]:not([data-aos-in])').forEach((el) => {
+      const rect = el.getBoundingClientRect()
+      if (rect.top < window.innerHeight && rect.bottom > 0) el.setAttribute('data-aos-in', '')
+    })
     scan()
     // Hide not-yet-seen elements only after they are being observed.
     root.classList.add('aos-ready')

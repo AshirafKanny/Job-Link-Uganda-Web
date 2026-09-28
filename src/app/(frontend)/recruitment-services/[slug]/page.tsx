@@ -105,7 +105,8 @@ export default async function ServicePage({ params }: Props) {
               />
             </figure>
           ) : (
-            image && <Photo image={image} aspect={[16, 9]} sizes="(min-width: 1024px) 60vw, 100vw" reveal className="aspect-[16/9]" />
+            // First image on the page (often the LCP element): load eagerly with high priority, no reveal.
+            image && <Photo image={image} aspect={[16, 9]} sizes="(min-width: 1024px) 60vw, 100vw" priority className="aspect-[16/9]" />
           )}
 
           {service.body && <div className="prose-content max-w-3xl" dangerouslySetInnerHTML={{ __html: service.body.html }} />}

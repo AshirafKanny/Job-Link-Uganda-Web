@@ -20,7 +20,7 @@ export const revalidate = 600
 export const metadata: Metadata = buildMetadata({
   title: 'Guide for Job Seekers: Finding Work in Uganda',
   description:
-    'How to find and apply for jobs through Job Link Uganda: browsing vacancies, applying correctly, what happens after you apply, and how to stay safe from recruitment scams.',
+    'How to find and apply for jobs through Job Link Uganda: browsing vacancies, applying correctly, what happens next and how to avoid recruitment scams.',
   path: routes.forJobSeekers(),
 })
 

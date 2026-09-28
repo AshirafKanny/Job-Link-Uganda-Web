@@ -27,7 +27,7 @@ export const seedServices: SeedService[] = [
     meta: {
       title: 'Hospitality Recruitment in Kampala, Uganda',
       description:
-        'Hospitality recruitment for restaurants, hotels and cafés in Kampala. Job Link Uganda sources and screens waiters, chefs, baristas, supervisors and hotel staff against your requirements.',
+        'Hospitality recruitment in Kampala for restaurants, hotels and cafés. We source and screen waiters, chefs, baristas, supervisors and hotel staff.',
     },
     relatedJobCategorySlugs: ['hospitality', 'restaurant', 'hotel', 'kitchen', 'bar-and-cafe'],
     body: `
@@ -116,7 +116,7 @@ Looking for work in hospitality instead? Browse current [hospitality jobs](/jobs
     meta: {
       title: 'Restaurant Staff Recruitment in Kampala',
       description:
-        'Recruit waiters, waitresses, baristas, cooks and restaurant supervisors in Kampala. Job Link Uganda screens candidates against your restaurant’s requirements before you interview.',
+        'Recruit waiters, waitresses, baristas, cooks and restaurant supervisors in Kampala. Candidates are screened against your requirements before you interview.',
     },
     relatedJobCategorySlugs: ['restaurant', 'kitchen', 'bar-and-cafe'],
     body: `
@@ -207,7 +207,7 @@ Tell us the shift pattern and whether accommodation or meals are provided. Candi
     meta: {
       title: 'Staff Recruitment Services in Kampala, Uganda',
       description:
-        'Staff recruitment in Kampala for sales, office and administration, cleaning and general roles. Job Link Uganda sources and screens candidates against your requirements.',
+        'Staff recruitment in Kampala for sales, office and administration, cleaning and general roles. Job Link Uganda sources and screens candidates for you.',
     },
     relatedJobCategorySlugs: ['sales', 'office-and-administration', 'cleaning-and-facilities', 'general-work'],
     body: `

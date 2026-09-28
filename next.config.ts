@@ -5,6 +5,21 @@ import { fileURLToPath } from 'url'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
+/**
+ * Canonical origin guard. Canonical tags, the sitemap, Open Graph and
+ * structured data are all built from NEXT_PUBLIC_SITE_URL, so it must be the
+ * real public domain before the site is indexable. Fail the build rather
+ * than ship canonicals that point search engines at the wrong host.
+ */
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+const siteHost = siteUrl ? new URL(siteUrl).hostname : null
+const isPublicDomain = Boolean(siteHost && !/(^|\.)vercel\.app$|^localhost$|^127\.0\.0\.1$/.test(siteHost))
+if (process.env.SITE_INDEXABLE === 'true' && !isPublicDomain) {
+  throw new Error(
+    `SITE_INDEXABLE=true but NEXT_PUBLIC_SITE_URL is "${siteUrl ?? '(not set)'}". Set it to the public domain (e.g. https://www.joblinkuganda.com) before allowing indexing.`,
+  )
+}
+
 const securityHeaders = [
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
@@ -31,6 +46,19 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }]
+  },
+  async redirects() {
+    // Production only: send any *.vercel.app alias to the real domain so search
+    // engines never see duplicate copies of the site on a second host.
+    if (process.env.VERCEL_ENV !== 'production' || !isPublicDomain) return []
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: '(?<vercelHost>.+\\.vercel\\.app)' }],
+        destination: `${siteUrl!.replace(/\/+$/, '')}/:path*`,
+        permanent: true,
+      },
+    ]
   },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {

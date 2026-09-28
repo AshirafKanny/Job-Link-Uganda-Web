@@ -22,6 +22,19 @@ export function organizationJsonLd(settings: SiteSettings): WithContext<Organiza
     ...(contact.phone ? { telephone: contact.phone } : {}),
     ...(contact.email ? { email: contact.email } : {}),
     ...(settings.socialLinks.length ? { sameAs: settings.socialLinks.map((l) => l.url) } : {}),
+    // Only emitted once real contact details exist in Site Settings.
+    ...(contact.phone || contact.email
+      ? {
+          contactPoint: {
+            '@type': 'ContactPoint' as const,
+            contactType: 'customer service',
+            ...(contact.phone ? { telephone: contact.phone } : {}),
+            ...(contact.email ? { email: contact.email } : {}),
+            areaServed: 'UG',
+            availableLanguage: ['English'],
+          },
+        }
+      : {}),
     areaServed: business.areasServed.map((name) => ({ '@type': 'Place' as const, name })),
   }
 
