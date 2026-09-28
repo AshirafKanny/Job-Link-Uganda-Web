@@ -3,6 +3,7 @@ import { Inter, Montserrat } from 'next/font/google'
 import type { ReactNode } from 'react'
 import { preconnect } from 'react-dom'
 import { PageViewTracker } from '@/components/analytics/PageViewTracker'
+import { FloatingWhatsApp } from '@/components/contact/FloatingWhatsApp'
 import { SiteFooter } from '@/components/layout/SiteFooter'
 import { ScrollAnimations } from '@/components/motion/ScrollAnimations'
 import { SiteHeader } from '@/components/layout/SiteHeader'
@@ -49,6 +50,7 @@ export default function FrontendLayout({ children }: { children: ReactNode }) {
           {children}
         </main>
         <SiteFooter />
+        <FloatingWhatsApp />
         <PageViewTracker />
         <ScrollAnimations />
       </body>
