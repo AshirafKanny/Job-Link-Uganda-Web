@@ -2,21 +2,23 @@ import { withPayload } from '@payloadcms/next/withPayload'
 import type { NextConfig } from 'next'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { site } from './src/config/site'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
  * Canonical origin guard. Canonical tags, the sitemap, Open Graph and
- * structured data are all built from NEXT_PUBLIC_SITE_URL, so it must be the
- * real public domain before the site is indexable. Fail the build rather
- * than ship canonicals that point search engines at the wrong host.
+ * structured data are all built from site.url (NEXT_PUBLIC_SITE_URL, with a
+ * production fallback in src/config/site.ts), so it must be the real public
+ * domain before the site is indexable. Fail the build rather than ship
+ * canonicals that point search engines at the wrong host.
  */
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
-const siteHost = siteUrl ? new URL(siteUrl).hostname : null
-const isPublicDomain = Boolean(siteHost && !/(^|\.)vercel\.app$|^localhost$|^127\.0\.0\.1$/.test(siteHost))
+const siteUrl = site.url
+const siteHost = new URL(siteUrl).hostname
+const isPublicDomain = !/(^|\.)vercel\.app$|^localhost$|^127\.0\.0\.1$/.test(siteHost)
 if (process.env.SITE_INDEXABLE === 'true' && !isPublicDomain) {
   throw new Error(
-    `SITE_INDEXABLE=true but NEXT_PUBLIC_SITE_URL is "${siteUrl ?? '(not set)'}". Set it to the public domain (e.g. https://www.joblinkuganda.com) before allowing indexing.`,
+    `SITE_INDEXABLE=true but NEXT_PUBLIC_SITE_URL is "${siteUrl}". Set it to the public domain (e.g. https://www.joblinkuganda.com) before allowing indexing.`,
   )
 }
 
@@ -55,7 +57,7 @@ const nextConfig: NextConfig = {
       {
         source: '/:path*',
         has: [{ type: 'host', value: '(?<vercelHost>.+\\.vercel\\.app)' }],
-        destination: `${siteUrl!.replace(/\/+$/, '')}/:path*`,
+        destination: `${siteUrl}/:path*`,
         permanent: true,
       },
     ]
