@@ -28,8 +28,13 @@ export const JobCategories: CollectionConfig = {
       type: 'text',
       required: true,
       // Case-insensitive, so "hospitality" cannot be added next to "Hospitality".
-      validate: async (value: unknown, { req, id }: { req: PayloadRequest; id?: number | string }) => {
+      validate: async (
+        value: unknown,
+        { req, id, previousValue }: { req: PayloadRequest; id?: number | string; previousValue?: unknown },
+      ) => {
         if (typeof value !== 'string' || !value.trim()) return 'Enter a category name.'
+        // Only new or renamed categories are checked, so an existing clash never blocks unrelated edits.
+        if (id != null && value === previousValue) return true
         const { docs } = await req.payload.find({
           collection: 'job-categories',
           depth: 0,
