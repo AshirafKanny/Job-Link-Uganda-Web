@@ -563,6 +563,15 @@ export interface RecruitmentRequest {
   sourcePath?: string | null;
   status?: ('new' | 'contacted' | 'in-progress' | 'closed') | null;
   internalNotes?: string | null;
+  /**
+   * Whether the new-enquiry email reached the team inbox. The enquiry is saved here either way.
+   */
+  notification?: {
+    status?: ('pending' | 'sent' | 'failed' | 'skipped') | null;
+    at?: string | null;
+    detail?: string | null;
+    providerId?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -1017,6 +1026,14 @@ export interface RecruitmentRequestsSelect<T extends boolean = true> {
   sourcePath?: T;
   status?: T;
   internalNotes?: T;
+  notification?:
+    | T
+    | {
+        status?: T;
+        at?: T;
+        detail?: T;
+        providerId?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

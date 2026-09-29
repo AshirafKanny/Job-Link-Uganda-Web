@@ -55,6 +55,11 @@ export default async function PrivacyPolicyPage() {
         Recruitment requests are stored in a private system that only authorised Job Link Uganda staff can access. They are
         not available through any public page or public interface.
       </p>
+      <p>
+        So that our team can respond quickly, a copy of each request is emailed to our business inbox. We use an email
+        delivery service to send it, and if you give us your email address, to send you a short confirmation that we
+        received your request. These services handle the information only to deliver those emails.
+      </p>
 
       <h2>How long we keep it</h2>
       <p>

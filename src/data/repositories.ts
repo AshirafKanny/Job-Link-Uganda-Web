@@ -82,9 +82,19 @@ export type RecruitmentRequestInput = {
   sourcePath: string
 }
 
+export type NotificationOutcome =
+  | { status: 'sent'; providerId: string | null }
+  | { status: 'failed'; error: string }
+  | { status: 'skipped'; reason: string }
+
 /** Private employer enquiries. Write-only from the website; never readable publicly. */
 export interface EnquiriesRepository {
-  createRecruitmentRequest(input: RecruitmentRequestInput): Promise<void>
+  /** Stores the enquiry and returns its private record id. */
+  createRecruitmentRequest(input: RecruitmentRequestInput): Promise<{ id: number | string }>
+  /** True when the same business and phone already sent an enquiry within the window (double submits, retries). */
+  hasRecentRecruitmentRequest(input: Pick<RecruitmentRequestInput, 'businessName' | 'phone'>, withinMs: number): Promise<boolean>
+  /** Records whether the staff email notification went out, so failures are visible in the admin. */
+  recordNotification(id: number | string, outcome: NotificationOutcome): Promise<void>
 }
 
 export type PageViewInput = {

@@ -4,7 +4,7 @@
  * business has had the text reviewed. REQUIRES BUSINESS INPUT.
  */
 export const legal = {
-  privacy: { reviewed: false, lastUpdated: '2026-09-25' },
+  privacy: { reviewed: false, lastUpdated: '2026-09-30' },
   terms: { reviewed: false, lastUpdated: '2026-09-25' },
   /** How long employer enquiries are kept. REQUIRES BUSINESS INPUT; null until decided. */
   enquiryRetention: null as string | null,

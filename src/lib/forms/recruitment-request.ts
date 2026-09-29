@@ -52,3 +52,38 @@ export type RecruitmentRequestState =
 
 /** Minimum time a human takes to fill the form; faster submissions are treated as bots. */
 export const MIN_FILL_TIME_MS = 3000
+
+/** Every field the form submits, in on-screen order (used by the server action and the browser check). */
+export const RECRUITMENT_REQUEST_FIELDS: RecruitmentRequestFields[] = [
+  'contactName',
+  'businessName',
+  'phone',
+  'email',
+  'serviceSlug',
+  'rolesNeeded',
+  'numberOfPositions',
+  'location',
+  'preferredStartDate',
+  'message',
+  'consent',
+]
+
+/** Reads the form's string fields; missing fields stay undefined, exactly as the server sees them. */
+export function readRecruitmentRequestValues(formData: FormData): Partial<Record<RecruitmentRequestFields, string>> {
+  return Object.fromEntries(
+    RECRUITMENT_REQUEST_FIELDS.map((f) => {
+      const value = formData.get(f)
+      return [f, typeof value === 'string' ? value : undefined]
+    }),
+  )
+}
+
+/** First error message per field. */
+export function fieldErrorsFrom(issues: readonly { path: readonly PropertyKey[]; message: string }[]) {
+  const fieldErrors: Partial<Record<RecruitmentRequestFields, string>> = {}
+  for (const issue of issues) {
+    const field = issue.path[0] as RecruitmentRequestFields
+    fieldErrors[field] ??= issue.message
+  }
+  return fieldErrors
+}

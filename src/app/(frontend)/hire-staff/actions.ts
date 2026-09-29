@@ -1,38 +1,29 @@
 'use server'
 
 import { headers } from 'next/headers'
+import { after } from 'next/server'
 import { employerEnquiriesEnabled } from '@/config/features'
 import { enquiriesRepo } from '@/data'
 import {
+  fieldErrorsFrom,
   MIN_FILL_TIME_MS,
+  readRecruitmentRequestValues,
   recruitmentRequestSchema,
   type RecruitmentRequestFields,
   type RecruitmentRequestState,
 } from '@/lib/forms/recruitment-request'
+import { notifyRecruitmentRequest } from '@/lib/email/notify-recruitment-request'
 import { rateLimit } from '@/lib/security/rate-limit'
-import { verifyTurnstile } from '@/lib/security/turnstile'
+import { turnstileEnabled, verifyTurnstile } from '@/lib/security/turnstile'
 
-const FIELDS: RecruitmentRequestFields[] = [
-  'contactName',
-  'businessName',
-  'phone',
-  'email',
-  'rolesNeeded',
-  'numberOfPositions',
-  'location',
-  'preferredStartDate',
-  'message',
-  'serviceSlug',
-  'consent',
-]
+/** Identical enquiries (same business and phone) inside this window are treated as one. */
+const DUPLICATE_WINDOW_MS = 10 * 60 * 1000
 
 export async function submitRecruitmentRequest(
   _prev: RecruitmentRequestState,
   formData: FormData,
 ): Promise<RecruitmentRequestState> {
-  const values = Object.fromEntries(
-    FIELDS.map((f) => [f, typeof formData.get(f) === 'string' ? String(formData.get(f)) : undefined]),
-  ) as Partial<Record<RecruitmentRequestFields, string>>
+  const values = readRecruitmentRequestValues(formData)
   const fail = (
     message: string,
     fieldErrors: Partial<Record<RecruitmentRequestFields, string>> = {},
@@ -59,14 +50,8 @@ export async function submitRecruitmentRequest(
   }
 
   const parsed = recruitmentRequestSchema.safeParse(values)
-  if (!parsed.success) {
-    const fieldErrors: Partial<Record<RecruitmentRequestFields, string>> = {}
-    for (const issue of parsed.error.issues) {
-      const field = issue.path[0] as RecruitmentRequestFields
-      fieldErrors[field] ??= issue.message
-    }
-    return fail('Please check the highlighted fields.', fieldErrors)
-  }
+  // Always re-validated here: the browser check is a convenience, never a security control.
+  if (!parsed.success) return fail('Please check the highlighted fields.', fieldErrorsFrom(parsed.error.issues))
 
   const referer = h.get('referer')
   let sourcePath = '/hire-staff'
@@ -76,11 +61,21 @@ export async function submitRecruitmentRequest(
     // Keep the default.
   }
 
+  const { consent: _consent, ...data } = parsed.data
+  const input = { ...data, sourcePath }
   try {
-    const { consent: _consent, ...data } = parsed.data
-    await enquiriesRepo.createRecruitmentRequest({ ...data, sourcePath })
-  } catch {
-    return fail('Something went wrong while sending your enquiry. Please try again, or contact us directly.')
+    // A double click, a retry after a slow network or a resubmitted page must not
+    // create a second enquiry or a second email.
+    if (await enquiriesRepo.hasRecentRecruitmentRequest(input, DUPLICATE_WINDOW_MS)) return { status: 'success' }
+
+    const { id } = await enquiriesRepo.createRecruitmentRequest(input)
+    const submittedAt = new Date()
+    // Email after the response: the visitor never waits on the email provider,
+    // and the enquiry is already saved if sending fails.
+    after(() => notifyRecruitmentRequest({ id, input, submittedAt, sendConfirmation: turnstileEnabled }))
+  } catch (error) {
+    console.error('[enquiry] Could not save recruitment request:', error instanceof Error ? error.message : 'unknown error')
+    return fail('We couldn’t send your request right now. Please try again in a moment, or contact us by phone or WhatsApp.')
   }
 
   return { status: 'success' }

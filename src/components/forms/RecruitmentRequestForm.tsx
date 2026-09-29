@@ -2,10 +2,16 @@
 
 import Link from 'next/link'
 import Script from 'next/script'
-import { useActionState, useEffect, useRef, useState, type ReactNode } from 'react'
+import { useActionState, useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { submitRecruitmentRequest } from '@/app/(frontend)/hire-staff/actions'
 import { Icon } from '@/components/ui/Icon'
-import type { RecruitmentRequestFields, RecruitmentRequestState } from '@/lib/forms/recruitment-request'
+import {
+  fieldErrorsFrom,
+  readRecruitmentRequestValues,
+  recruitmentRequestSchema,
+  type RecruitmentRequestFields,
+  type RecruitmentRequestState,
+} from '@/lib/forms/recruitment-request'
 import { cn } from '@/lib/cn'
 import { routes } from '@/lib/routes'
 
@@ -60,6 +66,12 @@ export function RecruitmentRequestForm({ services, defaultService, turnstileSite
     status: 'idle',
   })
   const [startedAt, setStartedAt] = useState(0)
+  // Instant browser check with the server's own schema. Tied to the server state
+  // it was made against, so a newer server response always takes over.
+  const [clientCheck, setClientCheck] = useState<{
+    against: RecruitmentRequestState
+    errors: Partial<Record<RecruitmentRequestFields, string>>
+  } | null>(null)
   const statusRef = useRef<HTMLDivElement>(null)
 
   // eslint-disable-next-line react-hooks/set-state-in-effect -- time-trap starts when the form is actually on screen
@@ -83,18 +95,34 @@ export function RecruitmentRequestForm({ services, defaultService, turnstileSite
     )
   }
 
-  const errors = state.status === 'error' ? state.fieldErrors : {}
+  const clientErrors = clientCheck?.against === state ? clientCheck.errors : null
+  const errors = clientErrors ?? (state.status === 'error' ? state.fieldErrors : {})
   const values = state.status === 'error' ? state.values : {}
+  const alertMessage = clientErrors ? 'Please check the highlighted fields.' : state.status === 'error' ? state.message : null
+
+  function checkBeforeSending(event: FormEvent<HTMLFormElement>) {
+    const parsed = recruitmentRequestSchema.safeParse(readRecruitmentRequestValues(new FormData(event.currentTarget)))
+    if (parsed.success) {
+      setClientCheck(null)
+      return
+    }
+    // Invalid: keep what was typed, show the errors and move focus to the first problem.
+    event.preventDefault()
+    const fieldErrors = fieldErrorsFrom(parsed.error.issues)
+    setClientCheck({ against: state, errors: fieldErrors })
+    const first = Object.keys(fieldErrors)[0]
+    event.currentTarget.querySelector<HTMLElement>(`[name="${first}"]`)?.focus()
+  }
   const describe = (id: RecruitmentRequestFields, hint = false) =>
     [hint && `${id}-hint`, errors[id] && `${id}-error`].filter(Boolean).join(' ') || undefined
   const invalid = (id: RecruitmentRequestFields) => (errors[id] ? true : undefined)
   const border = (id: RecruitmentRequestFields) => (errors[id] ? 'border-danger' : 'border-line-strong')
 
   return (
-    <form action={formAction} noValidate className="space-y-6">
-      {state.status === 'error' && (
+    <form action={formAction} onSubmit={checkBeforeSending} noValidate className="space-y-6">
+      {alertMessage && (
         <div ref={statusRef} tabIndex={-1} role="alert" className="border-l-4 border-danger bg-surface-muted p-4 font-medium">
-          {state.message}
+          {alertMessage}
         </div>
       )}
 

@@ -47,5 +47,30 @@ export const RecruitmentRequests: CollectionConfig = {
       admin: { position: 'sidebar' },
     },
     { name: 'internalNotes', type: 'textarea', admin: { position: 'sidebar' } },
+    {
+      name: 'notification',
+      label: 'Email notification',
+      type: 'group',
+      admin: {
+        position: 'sidebar',
+        description: 'Whether the new-enquiry email reached the team inbox. The enquiry is saved here either way.',
+      },
+      fields: [
+        {
+          name: 'status',
+          type: 'select',
+          options: [
+            { label: 'Sending', value: 'pending' },
+            { label: 'Sent', value: 'sent' },
+            { label: 'Failed', value: 'failed' },
+            { label: 'Not sent (email not configured)', value: 'skipped' },
+          ],
+          admin: { readOnly: true },
+        },
+        { name: 'at', label: 'Time', type: 'date', admin: { readOnly: true, date: { pickerAppearance: 'dayAndTime' } } },
+        { name: 'detail', type: 'text', admin: { readOnly: true } },
+        { name: 'providerId', label: 'Email provider message ID', type: 'text', admin: { readOnly: true } },
+      ],
+    },
   ],
 }
