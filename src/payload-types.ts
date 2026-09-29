@@ -223,6 +223,9 @@ export interface Job {
    * Shown on the page and included in search-engine job data.
    */
   applicationInstructions: string;
+  /**
+   * Draft jobs are saved but NOT shown on the website. Choose "Open" and save to publish.
+   */
   status: 'draft' | 'open' | 'closed';
   closeReason?: ('filled' | 'deadline' | 'withdrawn') | null;
   /**

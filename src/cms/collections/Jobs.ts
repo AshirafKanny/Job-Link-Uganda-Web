@@ -188,7 +188,10 @@ export const Jobs: CollectionConfig = {
         { label: 'Open', value: 'open' },
         { label: 'Closed', value: 'closed' },
       ],
-      admin: { position: 'sidebar' },
+      admin: {
+        position: 'sidebar',
+        description: 'Draft jobs are saved but NOT shown on the website. Choose "Open" and save to publish.',
+      },
     },
     {
       name: 'closeReason',
@@ -220,7 +223,8 @@ export const Jobs: CollectionConfig = {
           : true,
       admin: {
         position: 'sidebar',
-        date: { pickerAppearance: 'dayOnly' },
+        // Stored as midday UTC; show the calendar day only, never a misleading "3:00 PM".
+        date: { pickerAppearance: 'dayOnly', displayFormat: 'd MMM yyyy' },
         description: 'Applications accepted until the end of this day (Kampala time).',
       },
     },

@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, PayloadRequest } from 'payload'
 import { overseasRecruitmentEnabled } from '@/config/features'
 import { routes } from '@/lib/routes'
 import { canManageContent, canManageRecruitment, isAdmin, isStaff } from '../access'
@@ -23,12 +23,34 @@ export const JobCategories: CollectionConfig = {
     afterDelete: [jobsRevalidation.afterDelete],
   },
   fields: [
-    { name: 'name', type: 'text', required: true },
+    {
+      name: 'name',
+      type: 'text',
+      required: true,
+      // Case-insensitive, so "hospitality" cannot be added next to "Hospitality".
+      validate: async (value: unknown, { req, id }: { req: PayloadRequest; id?: number | string }) => {
+        if (typeof value !== 'string' || !value.trim()) return 'Enter a category name.'
+        const { docs } = await req.payload.find({
+          collection: 'job-categories',
+          depth: 0,
+          pagination: false,
+          select: { name: true },
+          overrideAccess: true,
+          req,
+        })
+        const clash = docs.find((d) => d.id !== id && d.name.trim().toLowerCase() === value.trim().toLowerCase())
+        return clash ? `A category called "${clash.name}" already exists. Use that one instead.` : true
+      },
+    },
     slugField('name'),
     {
       name: 'parent',
       type: 'relationship',
       relationTo: 'job-categories',
+      validate: (value: unknown, { id }: { id?: number | string }) =>
+        value != null && id != null && String(typeof value === 'object' ? (value as { id: unknown }).id : value) === String(id)
+          ? 'A category cannot be its own parent.'
+          : true,
       admin: { position: 'sidebar', description: 'e.g. "Restaurant" sits under "Hospitality".' },
     },
     {
