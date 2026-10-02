@@ -2,19 +2,11 @@ import Link from 'next/link'
 import { Logo } from '@/components/brand/Logo'
 import { WhatsAppLink } from '@/components/contact/WhatsAppLink'
 import { Icon } from '@/components/ui/Icon'
+import { SocialIcon, socialPlatformName } from '@/components/ui/SocialIcon'
 import { business } from '@/config/business'
 import { footerNav } from '@/config/navigation'
 import { settingsRepo } from '@/data'
 import { routes } from '@/lib/routes'
-
-const socialLabel: Record<string, string> = {
-  facebook: 'Facebook',
-  instagram: 'Instagram',
-  linkedin: 'LinkedIn',
-  x: 'X',
-  tiktok: 'TikTok',
-  youtube: 'YouTube',
-}
 
 /**
  * Footer. Contact details, office and social links render only from verified
@@ -79,6 +71,32 @@ export async function SiteFooter() {
             variant="link"
             className="mt-5 text-[#6fd39c]"
           />
+
+          {socialLinks.length > 0 && (
+            <div className="mt-8">
+              <h2 className="font-display text-xs font-bold tracking-[0.18em] text-brand-yellow uppercase">Follow us</h2>
+              <ul className="mt-4 flex flex-wrap gap-3">
+                {socialLinks.map((link) => {
+                  const name = socialPlatformName[link.platform]
+                  return (
+                    <li key={link.url}>
+                      {/* rel="me" tells crawlers these are the business's own profiles. */}
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="me noopener noreferrer"
+                        aria-label={`${business.name} on ${name} (opens in a new tab)`}
+                        title={name}
+                        className="grid size-11 place-items-center rounded-control border border-white/20 text-white/80 transition-[color,background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-white hover:bg-white hover:text-brand-black focus-visible:outline-brand-yellow motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                      >
+                        <SocialIcon platform={link.platform} size={19} />
+                      </a>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          )}
         </div>
 
         <div className="grid gap-10 sm:grid-cols-3">
@@ -102,21 +120,10 @@ export async function SiteFooter() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="container-page flex flex-col gap-4 py-6 text-sm text-white/55 sm:flex-row sm:items-center sm:justify-between">
+        <div className="container-page py-6 text-sm text-white/55">
           <p>
             © {year} {business.legalName ?? business.name}. {business.tagline}.
           </p>
-          {socialLinks.length > 0 && (
-            <ul className="flex flex-wrap gap-5">
-              {socialLinks.map((link) => (
-                <li key={link.url}>
-                  <a href={link.url} rel="noopener me" target="_blank" className="hover:text-white">
-                    {socialLabel[link.platform]}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          )}
         </div>
       </div>
     </footer>
