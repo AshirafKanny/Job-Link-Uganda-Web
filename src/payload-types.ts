@@ -538,11 +538,15 @@ export interface ArticleCategory {
   createdAt: string;
 }
 /**
+ * Employer enquiries from the website: requests to hire staff, and requests for hospitality training.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "recruitment-requests".
  */
 export interface RecruitmentRequest {
   id: number;
+  enquiryType: 'recruitment' | 'training';
+  trainingPackage?: string | null;
   businessName: string;
   contactName: string;
   phone: string;
@@ -1012,6 +1016,8 @@ export interface EmployersSelect<T extends boolean = true> {
  * via the `definition` "recruitment-requests_select".
  */
 export interface RecruitmentRequestsSelect<T extends boolean = true> {
+  enquiryType?: T;
+  trainingPackage?: T;
   businessName?: T;
   contactName?: T;
   phone?: T;

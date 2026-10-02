@@ -14,7 +14,7 @@ export const payloadEnquiriesRepository: EnquiriesRepository = {
     return { id: doc.id }
   },
 
-  async hasRecentRecruitmentRequest({ businessName, phone }, withinMs) {
+  async hasRecentRecruitmentRequest({ businessName, phone, enquiryType }, withinMs) {
     const payload = await getPayloadClient()
     const { totalDocs } = await payload.count({
       collection: 'recruitment-requests',
@@ -23,6 +23,8 @@ export const payloadEnquiriesRepository: EnquiriesRepository = {
         and: [
           { businessName: { equals: businessName } },
           { phone: { equals: phone } },
+          // A hiring request and a training request from the same business are both kept.
+          { enquiryType: { equals: enquiryType } },
           { createdAt: { greater_than: new Date(Date.now() - withinMs).toISOString() } },
         ],
       },

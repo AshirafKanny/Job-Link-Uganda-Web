@@ -207,18 +207,23 @@ Open the job, set the **Status** to **Closed**, choose a **Close reason** (*Fill
 
 ---
 
-## 9. Employer enquiries ("Request staff")
+## 9. Employer enquiries ("Request staff" and "Book workplace training")
 
-When a business fills in the **Request staff** form on the website, the enquiry appears in **Private records → Recruitment requests**.
+Two website forms create employer enquiries, and both appear in **Private records → Recruitment requests**:
+
+- **Request staff** (`/hire-staff`): a business wants to hire. *Enquiry type: Hire staff.*
+- **Book workplace training** (`/hospitality-training/book`): a business wants its existing staff trained. *Enquiry type: Hospitality training*, with the **Training package** they chose (if any).
 
 For each one:
-1. Open it to see the business, contact person, phone, roles needed and requirements. The **Service** field shows which service page they came from.
+1. Open it to see the business, contact person, phone and details. For hiring, the **Service** field shows which service page they came from; for training, **Roles needed** holds the staff to train and **Message** what the training should improve.
 2. Update the **Status** as you work: *New → Contacted → In progress → Closed*.
 3. Use **Internal notes** to record calls and decisions.
 
 These records are private: they never appear on the website and can't be read by the public.
 
-> **Check this section regularly.** The site does not email you about new enquiries yet. Email notifications can be added once an email service is set up.
+Every new enquiry is also emailed to **info@joblinkuganda.com** (subject "NEW EMPLOYER INQUIRY — …" or "NEW TRAINING ENQUIRY — …"); click **Reply** to answer the employer directly. The **Email notification** box on each enquiry shows whether that email was sent.
+
+Individuals interested in training courses contact you on **WhatsApp** (the site deliberately has no sign-up form for individuals until data-protection registration is confirmed). Training prices and package contents live in `src/content/training.ts`, so changing a price needs a small code update.
 
 The form has spam protection built in. If one person sends more than 5 enquiries in 15 minutes, they're asked to wait. This also means that if **you** test the form several times in a row, it will eventually ask you to wait. That's expected.
 

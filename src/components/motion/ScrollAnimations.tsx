@@ -45,23 +45,36 @@ export function ScrollAnimations() {
     }
 
     const scan = () => document.querySelectorAll<HTMLElement>('[data-aos]').forEach(prepare)
-
-    // Content already on screen when the page loads is shown as-is, not hidden
-    // and re-animated: hiding it would flash content and delay Largest
-    // Contentful Paint. Only content the visitor scrolls to animates.
-    document.querySelectorAll<HTMLElement>('[data-aos]:not([data-aos-in])').forEach((el) => {
-      const rect = el.getBoundingClientRect()
-      if (rect.top < window.innerHeight && rect.bottom > 0) el.setAttribute('data-aos-in', '')
-    })
-    scan()
-    // Hide not-yet-seen elements only after they are being observed.
-    root.classList.add('aos-ready')
-
     // Content streamed in or rendered later (e.g. after a filter) is picked up too.
     const mutations = new MutationObserver(scan)
-    mutations.observe(document.body, { childList: true, subtree: true })
+
+    const start = () => {
+      // Content already on screen when the page loads is shown as-is, not hidden
+      // and re-animated: hiding it would flash content and delay Largest
+      // Contentful Paint. Only content the visitor scrolls to animates.
+      document.querySelectorAll<HTMLElement>('[data-aos]:not([data-aos-in])').forEach((el) => {
+        const rect = el.getBoundingClientRect()
+        if (rect.top < window.innerHeight && rect.bottom > 0) el.setAttribute('data-aos-in', '')
+      })
+      scan()
+      // Hide not-yet-seen elements only after they are being observed.
+      root.classList.add('aos-ready')
+      mutations.observe(document.body, { childList: true, subtree: true })
+    }
+
+    // Start only after the page has loaded, so no attribute is added to markup
+    // React has not hydrated yet (that causes hydration-mismatch warnings).
+    // Until then nothing is hidden: content simply shows without animation.
+    let frame = 0
+    const startSoon = () => {
+      frame = requestAnimationFrame(start)
+    }
+    if (document.readyState === 'complete') startSoon()
+    else window.addEventListener('load', startSoon, { once: true })
 
     return () => {
+      window.removeEventListener('load', startSoon)
+      cancelAnimationFrame(frame)
       observer.disconnect()
       mutations.disconnect()
       document.querySelectorAll<HTMLElement>('[data-aos-bound]').forEach((el) => delete el.dataset.aosBound)

@@ -22,6 +22,10 @@ export const routes = {
   service: (serviceSlug: string) => `/recruitment-services/${serviceSlug}`,
   hireStaff: () => '/hire-staff',
 
+  // Hospitality training (individuals and on-site training for employers)
+  hospitalityTraining: () => '/hospitality-training',
+  bookTraining: () => '/hospitality-training/book',
+
   // Trust & company
   howItWorks: () => '/how-it-works',
   recruitmentSafety: () => '/recruitment-safety',

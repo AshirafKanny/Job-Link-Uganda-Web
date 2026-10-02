@@ -1,18 +1,12 @@
 import Image from 'next/image'
 import { settingsRepo } from '@/data'
 import { whatsappHref } from './WhatsAppLink'
-
-/**
- * Number supplied by the business on 2026-09-28 (0744 429808). A WhatsApp
- * number saved in Site Settings takes precedence, so staff can change it
- * without a code release.
- */
-const DEFAULT_WHATSAPP = '256744429808'
+import { generalWhatsApp } from './whatsapp-number'
 
 /** Floating "Chat on WhatsApp" button, fixed to the bottom-right of every public page. */
 export async function FloatingWhatsApp() {
   const settings = await settingsRepo.get().catch(() => null)
-  const number = settings?.contact.whatsappCandidates ?? settings?.contact.whatsappEmployers ?? DEFAULT_WHATSAPP
+  const number = generalWhatsApp(settings?.contact)
 
   return (
     <a

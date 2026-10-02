@@ -72,6 +72,31 @@ export const stockImages = {
     focus: '50% 45%',
     credit: { name: 'Iwaria Inc.', url: 'https://unsplash.com/photos/M7ALc3UuX_g' },
   },
+  // Hospitality training (added 2026-10-02). Illustrative only: not a Job Link Uganda session or client.
+  restaurantTeam: {
+    src: 'https://images.unsplash.com/photo-1786034760172-16ee03955ec5',
+    width: 3840,
+    height: 2880,
+    alt: 'A large restaurant team in uniforms and hairnets, gathered together in their dining room',
+    focus: '50% 55%',
+    credit: { name: 'Jose Gaspar', url: 'https://unsplash.com/photos/3ELTTDBFoME' },
+  },
+  tableService: {
+    src: 'https://images.unsplash.com/photo-1512061942530-e6a4e9a5cf27',
+    width: 6016,
+    height: 4016,
+    alt: 'A waiter in a white shirt and apron setting places at a long banquet table',
+    focus: '68% 40%',
+    credit: { name: 'CHUTTERSNAP', url: 'https://unsplash.com/photos/OB7ol699Iww' },
+  },
+  kitchenCook: {
+    src: 'https://images.unsplash.com/photo-1565608087341-404b25492fee',
+    width: 4000,
+    height: 6000,
+    alt: 'A cook in a white hat and grey apron plating food at the pass in a restaurant kitchen',
+    focus: '50% 30%',
+    credit: { name: 'Jeff Siepman', url: 'https://unsplash.com/photos/kyuPjZudBKs' },
+  },
 } satisfies Record<string, StockImage>
 
 export type StockImageKey = keyof typeof stockImages

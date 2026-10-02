@@ -25,6 +25,7 @@ const STATIC_PATHS = [
   routes.jobs(),
   routes.services(),
   routes.hireStaff(),
+  routes.hospitalityTraining(),
   routes.forJobSeekers(),
   routes.howItWorks(),
   routes.recruitmentSafety(),

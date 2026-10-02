@@ -14,6 +14,7 @@ import { Photo } from '@/components/ui/Photo'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { business } from '@/config/business'
 import { employerReasons, employerSteps, hospitalityRoleGroups, jobSeekerSteps } from '@/content/recruitment'
+import { formatUgx, individualPackages, trainingFocusAreas, workplacePackages } from '@/content/training'
 import { articlesRepo, jobsRepo, servicesRepo, settingsRepo } from '@/data'
 import { categorySlugs, routes, serviceSlugs } from '@/lib/routes'
 import { buildMetadata } from '@/lib/seo/metadata'
@@ -259,7 +260,72 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 06 — Recruitment services */}
+      {/* 06 — Hospitality training: the natural next step after hospitality recruitment */}
+      <section aria-labelledby="training-heading" className="py-20 sm:py-28">
+        <div className="container-page grid gap-14 lg:grid-cols-[1.05fr_1fr] lg:gap-20">
+          <div>
+            <SectionHeading
+              id="training-heading"
+              eyebrow="Hospitality training"
+              title="Build a more professional hospitality team"
+              lead="Practical training for restaurant, hotel and food service workers, through short courses or delivered on site at your business."
+              data-aos="fade-up"
+            />
+            <ul className="mt-10 grid gap-x-8 gap-y-7 sm:grid-cols-2">
+              {trainingFocusAreas.map((area, i) => (
+                <li key={area.title} data-aos="fade-up" data-aos-delay={(i % 2) * 100}>
+                  <span aria-hidden="true" className="block h-0.5 w-8 bg-brand-red" />
+                  <h3 className="mt-3 text-lg font-bold">{area.title}</h3>
+                  <p className="mt-1 text-[0.95rem] text-ink-muted">{area.text}</p>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-10 flex flex-wrap gap-3" data-aos="fade-up">
+              <ButtonLink href={routes.bookTraining()} variant="dark" arrow>
+                Book workplace training
+              </ButtonLink>
+              <ButtonLink href={routes.hospitalityTraining()} variant="outline">
+                Explore hospitality training
+              </ButtonLink>
+            </div>
+          </div>
+
+          <div className="lg:pt-2">
+            <Photo
+              image="restaurantTeam"
+              aspect={[4, 3]}
+              sizes="(min-width: 1024px) 42vw, 100vw"
+              reveal
+              className="aspect-[4/3]"
+            />
+            <div className="mt-6 border-l-4 border-brand-yellow bg-surface-muted p-6" data-aos="fade-up">
+              <h3 className="text-lg font-bold">Already have a team? We train them where they work.</h3>
+              <p className="mt-2 text-[0.95rem] text-ink-muted">
+                Our trainers come to your restaurant, hotel or café and train your staff on site, using your own setting
+                and menu. Every participant who completes the training receives a Certificate of Completion.
+              </p>
+              <dl className="mt-5 grid gap-4 border-t border-line pt-5 sm:grid-cols-2">
+                <div>
+                  <dt className="text-sm text-ink-subtle">Workplace training</dt>
+                  <dd className="mt-0.5 font-display font-extrabold">
+                    From {formatUgx(workplacePackages[0]!.price)}
+                    <span className="block font-sans text-sm font-normal text-ink-muted">for up to 10 staff</span>
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm text-ink-subtle">Individual courses</dt>
+                  <dd className="mt-0.5 font-display font-extrabold">
+                    From {formatUgx(individualPackages[0]!.price)}
+                    <span className="block font-sans text-sm font-normal text-ink-muted">per person</span>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 07 — Recruitment services */}
       {topLevelServices.length > 0 && (
         <section aria-labelledby="services-heading" className="py-20 sm:py-24">
           <div className="container-page">
@@ -284,7 +350,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* 07 — Why businesses work with Job Link */}
+      {/* 08 — Why businesses work with Job Link */}
       <section aria-labelledby="why-heading" className="border-y border-line bg-surface-muted py-20 sm:py-24">
         <div className="container-page grid gap-12 lg:grid-cols-[0.9fr_1.4fr] lg:gap-20">
           <div className="lg:sticky lg:top-28 lg:self-start">
@@ -311,7 +377,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 08 — Career resources */}
+      {/* 09 — Career resources */}
       <section aria-labelledby="resources-heading" className="py-20 sm:py-24">
         <div className="container-page">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
@@ -338,7 +404,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 09 — Transparency */}
+      {/* 10 — Transparency */}
       <section aria-labelledby="transparency-heading" className="border-t border-line bg-surface-muted py-20 sm:py-24">
         <div className="container-page">
           <SectionHeading
@@ -377,7 +443,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 10 — Final CTA */}
+      {/* 11 — Final CTA */}
       <AudienceCta />
     </>
   )

@@ -474,6 +474,8 @@ These refinements were made while building the foundation. Details and reasons a
 | 2026-09-25 | Hub indexation | Indexable with ≥1 live job **or** unique content | "Unique content" = CMS intro of ≥ 280 characters | Prevents short stub intros from getting empty hubs indexed |
 | 2026-09-28 | Hub indexation (revised) | ≥1 live job or ≥280-character intro | **≥1 live job only** (docs/05-seo-audit.md) | A job listing page with no listings is a soft-404 / thin-page risk whatever its intro says; hubs re-enter the index automatically when a vacancy is published |
 | 2026-09-28 | Sitemap lastmod | Accurate lastmod | Omitted where no real edit date exists | Static pages reported the request time; Google ignores lastmod on sites where it is unreliable |
+| 2026-10-02 | New service line | Recruitment only | **Hospitality training** at `/hospitality-training` (indexed, in sitemap, header "Training") + home section after Hospitality recruitment; workplace bookings at `/hospitality-training/book` (noindex form page) reuse the employer enquiry form (`enquiryType: training`) | Business added the service with its own prices. Targets "hospitality training Uganda", restaurant/hotel staff training, on-site training. Service + OfferCatalog schema mirrors the visible prices; no Course/Event (no dates) and no FAQ schema (site policy). Certificate described only as a "Job Link Uganda Certificate of Completion", not accredited. Individuals enquire by WhatsApp: no candidate data collection before PDPO |
+| 2026-10-02 | Header navigation | Desktop menu from 1024 px | Desktop menu from **1280 px**; menu button below | Seven items plus the CTA no longer fit on one line between 1024 and 1279 px |
 
 ---
 

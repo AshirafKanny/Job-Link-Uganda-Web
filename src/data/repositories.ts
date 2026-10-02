@@ -79,6 +79,10 @@ export type RecruitmentRequestInput = {
   preferredStartDate: string | null
   message: string | null
   serviceSlug: string | null
+  /** Staff to hire, or existing staff to train. */
+  enquiryType: 'recruitment' | 'training'
+  /** Training package id, for training enquiries. */
+  trainingPackage: string | null
   sourcePath: string
 }
 
@@ -92,7 +96,10 @@ export interface EnquiriesRepository {
   /** Stores the enquiry and returns its private record id. */
   createRecruitmentRequest(input: RecruitmentRequestInput): Promise<{ id: number | string }>
   /** True when the same business and phone already sent an enquiry within the window (double submits, retries). */
-  hasRecentRecruitmentRequest(input: Pick<RecruitmentRequestInput, 'businessName' | 'phone'>, withinMs: number): Promise<boolean>
+  hasRecentRecruitmentRequest(
+    input: Pick<RecruitmentRequestInput, 'businessName' | 'phone' | 'enquiryType'>,
+    withinMs: number,
+  ): Promise<boolean>
   /** Records whether the staff email notification went out, so failures are visible in the admin. */
   recordNotification(id: number | string, outcome: NotificationOutcome): Promise<void>
 }

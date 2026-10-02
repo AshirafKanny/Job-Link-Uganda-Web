@@ -25,6 +25,9 @@ type Props = { params: Promise<{ slug: string }> }
 
 const getService = cache((slug: string) => servicesRepo.getBySlug(slug))
 
+/** Services whose employers are likely to want staff training as well. */
+const HOSPITALITY_SERVICES = new Set<string>([serviceSlugs.hospitality, serviceSlugs.restaurant, serviceSlugs.hotel])
+
 /** Illustrative photo per service when the CMS has no featured image. */
 const fallbackImage: Record<string, StockImageKey> = {
   [serviceSlugs.hospitality]: 'chef',
@@ -170,6 +173,18 @@ export default async function ServicePage({ params }: Props) {
                 ))}
               </ul>
             </nav>
+          )}
+
+          {HOSPITALITY_SERVICES.has(service.slug) && (
+            <div className="border-t border-line pt-6">
+              <h2 className="font-display text-xs font-bold tracking-[0.16em] uppercase">Already have staff?</h2>
+              <p className="mt-2 text-[0.95rem] text-ink-muted">
+                We also train hospitality teams in customer service, food and beverage service and hygiene, on site.
+              </p>
+              <ArrowLink href={routes.hospitalityTraining()} className="mt-3">
+                Hospitality training
+              </ArrowLink>
+            </div>
           )}
 
           <ArrowLink href={routes.services()}>All recruitment services</ArrowLink>

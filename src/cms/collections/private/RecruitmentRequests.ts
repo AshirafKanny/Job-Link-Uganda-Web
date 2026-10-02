@@ -13,10 +13,29 @@ export const RecruitmentRequests: CollectionConfig = {
   admin: {
     useAsTitle: 'businessName',
     group: 'Private records',
-    defaultColumns: ['businessName', 'contactName', 'status', 'createdAt'],
+    defaultColumns: ['businessName', 'contactName', 'enquiryType', 'status', 'createdAt'],
+    description: 'Employer enquiries from the website: requests to hire staff, and requests for hospitality training.',
   },
   access: { read: canManageRecruitment, create: nobody, update: canManageRecruitment, delete: isAdmin },
   fields: [
+    {
+      name: 'enquiryType',
+      label: 'Enquiry type',
+      type: 'select',
+      required: true,
+      defaultValue: 'recruitment',
+      options: [
+        { label: 'Hire staff', value: 'recruitment' },
+        { label: 'Hospitality training', value: 'training' },
+      ],
+      admin: { position: 'sidebar', readOnly: true },
+    },
+    {
+      name: 'trainingPackage',
+      label: 'Training package',
+      type: 'text',
+      admin: { position: 'sidebar', readOnly: true, condition: (data) => data?.enquiryType === 'training' },
+    },
     { name: 'businessName', type: 'text', required: true },
     { name: 'contactName', type: 'text', required: true },
     { name: 'phone', type: 'text', required: true },

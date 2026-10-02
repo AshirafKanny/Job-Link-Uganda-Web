@@ -130,6 +130,18 @@ export default async function RecruitmentServicesPage() {
           <ArrowLink href={`${routes.howItWorks()}#employers`} className="mt-8" data-aos="fade-up">
             Read the full employer process
           </ArrowLink>
+
+          <div className="mt-14 flex flex-col gap-4 border-l-4 border-brand-yellow bg-surface-muted p-6 sm:flex-row sm:items-center sm:justify-between" data-aos="fade-up">
+            <div>
+              <h3 className="text-lg font-bold">Already have a team? We can train them too.</h3>
+              <p className="mt-1 text-ink-muted">
+                Practical hospitality training for restaurant and hotel staff, delivered at your workplace.
+              </p>
+            </div>
+            <ArrowLink href={routes.hospitalityTraining()} className="shrink-0">
+              Hospitality training
+            </ArrowLink>
+          </div>
         </div>
       </section>
 

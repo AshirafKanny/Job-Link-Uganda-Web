@@ -38,6 +38,17 @@ describe('recruitmentRequestSchema', () => {
     expect(recruitmentRequestSchema.safeParse({ ...valid, message: 'x'.repeat(2001) }).success).toBe(false)
   })
 
+  it('defaults to a recruitment enquiry', () => {
+    expect(recruitmentRequestSchema.parse(valid)).toMatchObject({ enquiryType: 'recruitment', trainingPackage: null })
+  })
+
+  it('accepts training enquiries with a known package only', () => {
+    const training = { ...valid, enquiryType: 'training', trainingPackage: 'workplace-starter' }
+    expect(recruitmentRequestSchema.parse(training)).toMatchObject({ enquiryType: 'training', trainingPackage: 'workplace-starter' })
+    expect(recruitmentRequestSchema.safeParse({ ...training, trainingPackage: 'free-course' }).success).toBe(false)
+    expect(recruitmentRequestSchema.safeParse({ ...valid, enquiryType: 'newsletter' }).success).toBe(false)
+  })
+
   it('rejects unexpected service slugs', () => {
     expect(recruitmentRequestSchema.safeParse({ ...valid, serviceSlug: '<script>' }).success).toBe(false)
   })

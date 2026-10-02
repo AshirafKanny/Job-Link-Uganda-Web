@@ -10,6 +10,7 @@ export type NavItem = { label: string; href: string; description?: string }
 export const mainNav: NavItem[] = [
   { label: 'Jobs', href: routes.jobs() },
   { label: 'Recruitment Services', href: routes.services() },
+  { label: 'Training', href: routes.hospitalityTraining() },
   { label: 'For Job Seekers', href: routes.forJobSeekers() },
   { label: 'Career Resources', href: routes.careerResources() },
   { label: 'About', href: routes.about() },
@@ -25,6 +26,7 @@ export const footerNav: { title: string; items: NavItem[] }[] = [
       { label: 'Find jobs', href: routes.jobs() },
       { label: 'Hospitality jobs', href: routes.jobCategory(categorySlugs.hospitality) },
       { label: 'Restaurant jobs', href: routes.jobCategory(categorySlugs.restaurant) },
+      { label: 'Hospitality training courses', href: routes.hospitalityTraining() },
       { label: 'Guide for job seekers', href: routes.forJobSeekers() },
       { label: 'Career resources', href: routes.careerResources() },
     ],
@@ -36,6 +38,7 @@ export const footerNav: { title: string; items: NavItem[] }[] = [
       { label: 'Hospitality recruitment', href: routes.service(serviceSlugs.hospitality) },
       { label: 'Restaurant staff recruitment', href: routes.service(serviceSlugs.restaurant) },
       { label: 'Request staff', href: routes.hireStaff() },
+      { label: 'Workplace staff training', href: `${routes.hospitalityTraining()}#workplace` },
       { label: 'How we recruit', href: routes.howItWorks() },
     ],
   },

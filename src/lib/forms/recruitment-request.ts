@@ -1,4 +1,9 @@
 import { z } from 'zod'
+import { allTrainingPackages } from '@/content/training'
+
+/** Employer enquiries arrive through one form in two modes: staff to hire, or staff to train. */
+export const ENQUIRY_TYPES = ['recruitment', 'training'] as const
+export type EnquiryType = (typeof ENQUIRY_TYPES)[number]
 
 /** Collapses whitespace and strips control characters from free text. */
 const text = (max: number) =>
@@ -23,7 +28,7 @@ export const recruitmentRequestSchema = z.object({
     z.string().regex(/^\+?[0-9\s()-]{9,20}$/, 'Please enter a valid phone number, e.g. 07XX XXX XXX or +256 7XX XXX XXX.'),
   ),
   email: optionalText(150).pipe(z.union([z.null(), z.email('Please enter a valid email address, or leave it empty.')])),
-  rolesNeeded: text(1000).pipe(z.string().min(3, 'Please tell us which roles you need to fill.')),
+  rolesNeeded: text(1000).pipe(z.string().min(3, 'Please tell us which roles or staff this is for.')),
   numberOfPositions: z
     .string()
     .optional()
@@ -35,6 +40,15 @@ export const recruitmentRequestSchema = z.object({
   ),
   message: optionalText(2000),
   serviceSlug: optionalText(80).pipe(z.union([z.null(), z.string().regex(/^[a-z0-9-]+$/)])),
+  enquiryType: z
+    .string()
+    .optional()
+    .transform((v) => v || 'recruitment')
+    .pipe(z.enum(ENQUIRY_TYPES)),
+  /** A training package id, only for training enquiries. */
+  trainingPackage: optionalText(60).pipe(
+    z.union([z.null(), z.enum(allTrainingPackages.map((p) => p.id) as [string, ...string[]])]),
+  ),
   consent: z.literal('on', { error: 'Please confirm you agree to us using these details to respond to your enquiry.' }),
 })
 
@@ -65,6 +79,8 @@ export const RECRUITMENT_REQUEST_FIELDS: RecruitmentRequestFields[] = [
   'location',
   'preferredStartDate',
   'message',
+  'enquiryType',
+  'trainingPackage',
   'consent',
 ]
 

@@ -1,5 +1,6 @@
 import 'server-only'
 import { site } from '@/config/site'
+import { allTrainingPackages, formatUgx } from '@/content/training'
 import { enquiriesRepo, servicesRepo } from '@/data'
 import type { RecruitmentRequestInput } from '@/data/repositories'
 import { adminEmail, emailConfigured, sendEmail } from './send'
@@ -28,8 +29,15 @@ export async function notifyRecruitmentRequest({ id, input, submittedAt, sendCon
   }
 
   const service = input.serviceSlug ? await servicesRepo.getBySlug(input.serviceSlug).catch(() => null) : null
+  const trainingPackage = allTrainingPackages.find((p) => p.id === input.trainingPackage)
   const message = recruitmentRequestNotification(
-    { ...input, id, serviceTitle: service?.title ?? input.serviceSlug, submittedAt },
+    {
+      ...input,
+      id,
+      serviceTitle: service?.title ?? input.serviceSlug,
+      trainingPackageName: trainingPackage ? `${trainingPackage.name} — ${formatUgx(trainingPackage.price)}` : null,
+      submittedAt,
+    },
     site.url,
   )
   const result = await sendEmail({
@@ -50,7 +58,7 @@ export async function notifyRecruitmentRequest({ id, input, submittedAt, sendCon
   if (sendConfirmation && input.email) {
     const confirmation = await sendEmail({
       to: input.email,
-      ...recruitmentRequestConfirmation(site.url),
+      ...recruitmentRequestConfirmation(site.url, input.enquiryType),
       replyTo: adminEmail,
       idempotencyKey: `recruitment-request-${id}-confirmation`,
     })

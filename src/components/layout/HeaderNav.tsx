@@ -42,7 +42,7 @@ export function HeaderNav({ items, cta }: Props) {
 
   return (
     <>
-      <nav aria-label="Main" className="hidden lg:block">
+      <nav aria-label="Main" className="hidden xl:block">
         <ul className="flex items-center gap-1">
           {items.map((item) => {
             const active = isActive(pathname, item.href)
@@ -52,8 +52,8 @@ export function HeaderNav({ items, cta }: Props) {
                   href={item.href}
                   aria-current={active ? 'page' : undefined}
                   className={cn(
-                    'relative px-3 py-2 font-display text-[0.9rem] font-semibold transition-colors duration-200',
-                    'after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:origin-left after:bg-brand-red after:transition-transform after:duration-300',
+                    'relative px-2.5 py-2 font-display text-[0.9rem] font-semibold whitespace-nowrap transition-colors duration-200 2xl:px-3',
+                    'after:absolute after:inset-x-2.5 after:-bottom-0.5 2xl:after:inset-x-3 after:h-0.5 after:origin-left after:bg-brand-red after:transition-transform after:duration-300',
                     active
                       ? 'text-ink after:scale-x-100'
                       : 'text-ink-muted after:scale-x-0 hover:text-ink hover:after:scale-x-100',
@@ -70,13 +70,13 @@ export function HeaderNav({ items, cta }: Props) {
       <div className="flex items-center gap-2">
         {/* Wrapper controls visibility so it can't conflict with the button's own display utility. */}
         <div className="hidden sm:block">
-          <Link href={cta.href} className={buttonClasses('primary', 'md')}>
+          <Link href={cta.href} className={buttonClasses('primary', 'md', 'whitespace-nowrap')}>
             {cta.label}
           </Link>
         </div>
         <button
           type="button"
-          className="menu-toggle inline-flex size-11 items-center justify-center rounded-control border border-line text-ink lg:hidden"
+          className="menu-toggle inline-flex size-11 items-center justify-center rounded-control border border-line text-ink xl:hidden"
           data-open={open || undefined}
           aria-expanded={open}
           aria-controls={panelId}
@@ -97,7 +97,7 @@ export function HeaderNav({ items, cta }: Props) {
         id={panelId}
         inert={!open}
         data-open={open || undefined}
-        className="menu-panel fixed inset-x-0 top-(--header-height) bottom-0 z-40 overflow-y-auto bg-surface lg:hidden"
+        className="menu-panel fixed inset-x-0 top-(--header-height) bottom-0 z-40 overflow-y-auto bg-surface xl:hidden"
       >
         <div aria-hidden="true" className="menu-panel__rule flag-bar h-1" />
         <nav aria-label="Main mobile" className="container-page py-6">

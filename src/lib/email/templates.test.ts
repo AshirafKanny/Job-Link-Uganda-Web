@@ -5,6 +5,8 @@ const SITE = 'https://www.joblinkuganda.com'
 
 const data: RecruitmentRequestEmailData = {
   id: 42,
+  enquiryType: 'recruitment',
+  trainingPackageName: null,
   contactName: 'Jane Namubiru',
   businessName: 'Cafe <script>alert(1)</script>',
   phone: '0700 000 000',
@@ -59,6 +61,25 @@ describe('recruitmentRequestNotification', () => {
     expect(noEmail.text).not.toContain('Email:')
     expect(noEmail.text).not.toContain('Message:')
     expect(noEmail.text).toContain('did not leave an email address')
+  })
+})
+
+describe('training enquiries', () => {
+  const email = recruitmentRequestNotification(
+    { ...data, enquiryType: 'training', trainingPackageName: 'Workplace Starter — UGX 1,200,000', rolesNeeded: '6 waiters' },
+    SITE,
+  )
+
+  it('are labelled as training in the subject and body', () => {
+    expect(email.subject).toBe('NEW TRAINING ENQUIRY — Cafe <script>alert(1)</script>')
+    expect(email.text).toContain('wants hospitality training')
+    expect(email.text).toContain('Training package:\nWorkplace Starter — UGX 1,200,000')
+    expect(email.text).toContain('Staff to train:\n6 waiters')
+    expect(email.text).not.toContain('Recruitment service:')
+  })
+
+  it('send a training-specific confirmation', () => {
+    expect(recruitmentRequestConfirmation(SITE, 'training').subject).toBe('We received your training request — Job Link Uganda')
   })
 })
 

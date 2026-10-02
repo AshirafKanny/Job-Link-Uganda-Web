@@ -36,6 +36,42 @@ export function serviceJsonLd(service: ServiceContent): WithContext<Service> {
   }
 }
 
+/**
+ * Hospitality training as a Service with its visible price list. Offers are
+ * built from the same package data the page renders, so structured data can
+ * never disagree with what visitors see. No Course/Event markup: there are no
+ * published course dates, and the certificate is not an accredited award.
+ */
+export function trainingServiceJsonLd(
+  description: string,
+  packages: { id: string; name: string; price: number; priceUnit: string; duration: string; groupSize?: string }[],
+): WithContext<Service> {
+  const url = absoluteUrl(routes.hospitalityTraining())
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Hospitality training',
+    serviceType: 'Hospitality staff training',
+    description,
+    url,
+    provider: { '@id': ORGANIZATION_ID },
+    areaServed: business.areasServed.map((name) => ({ '@type': 'Place' as const, name })),
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Hospitality training packages',
+      itemListElement: packages.map((p) => ({
+        '@type': 'Offer' as const,
+        name: p.name,
+        description: [p.duration, p.groupSize, p.priceUnit].filter(Boolean).join(', '),
+        price: p.price,
+        priceCurrency: 'UGX',
+        url: `${url}#${p.id}`,
+        itemOffered: { '@type': 'Service' as const, name: `${p.name} hospitality training` },
+      })),
+    },
+  }
+}
+
 /** Only for pages that visibly render these exact questions and answers. */
 export function faqJsonLd(faqs: Faq[]): WithContext<FAQPage> | null {
   if (faqs.length === 0) return null

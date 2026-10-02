@@ -130,6 +130,13 @@ export default async function ForJobSeekersPage() {
                 </li>
               ))}
             </ul>
+            <p className="mt-8 text-[0.95rem] text-ink-muted" data-aos="fade-up">
+              Want to improve your hospitality skills first? Our{' '}
+              <Link href={routes.hospitalityTraining()} className="font-semibold text-ink underline underline-offset-2 hover:text-brand-red-dark">
+                hospitality training courses
+              </Link>{' '}
+              cover customer service, food and beverage service and hygiene, with a Certificate of Completion.
+            </p>
           </div>
           <div className="self-start lg:pt-16">
             <SafetyCallout variant="full" />
