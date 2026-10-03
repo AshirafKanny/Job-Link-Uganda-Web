@@ -89,6 +89,7 @@ git push
 2. **Add New → Project → Import** your `Job-Link-Uganda-Web` repository.
 3. Framework preset: **Next.js** (detected automatically).
 4. **Build command: nothing to do.** The repository's `vercel.json` already sets it to `npm run ci`, which applies database migrations first and then builds the site, so the live database always matches the code. Leave Vercel's build settings on their defaults.
+   Between the two, `npm run migrate:check` confirms every migration is applied and **fails the deploy** if one is missing (added after a migration did not apply on 2026-10-03 and the admin crashed). A failed deploy leaves the previous version live. If it ever fails, run `npm run migrate` against the live database and redeploy.
 5. Open **Environment Variables** and add these. Use real values, not the examples:
 
 | Name | Value |
