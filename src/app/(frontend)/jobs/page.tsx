@@ -38,6 +38,7 @@ export default async function JobsPage({ searchParams }: Props) {
         eyebrow="Current vacancies"
         title="Jobs in Uganda"
         lead="Vacancies Job Link Uganda is currently recruiting for. Each listing explains the role, the requirements and exactly how to apply."
+        image="jobSeekerLaptop"
       >
         <JobSearchForm categories={browse.categories} locations={browse.locations} values={filters} />
       </PageHeader>

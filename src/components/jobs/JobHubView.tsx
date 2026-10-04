@@ -5,6 +5,7 @@ import { NoJobsState } from '@/components/jobs/NoJobsState'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { ArrowLink } from '@/components/ui/Button'
 import { Pagination } from '@/components/ui/Pagination'
+import { jobCategoryImages } from '@/config/visuals'
 import type { Paginated } from '@/domain/content/types'
 import type { JobSummary } from '@/domain/jobs/types'
 import type { loadJobBrowseData } from '@/lib/jobs-browse'
@@ -46,6 +47,7 @@ export function JobHubView({
         eyebrow={eyebrow}
         title={title}
         lead={paragraphs.length > 0 ? paragraphs.map((p) => <p key={p.slice(0, 32)} className="[&+p]:mt-3">{p}</p>) : undefined}
+        image={activeCategory ? jobCategoryImages[activeCategory] : undefined}
       >
         <ArrowLink href={routes.jobs()}>Search all vacancies</ArrowLink>
       </PageHeader>

@@ -1,12 +1,17 @@
+import { PhotoBand } from '@/components/sections/PhotoBand'
 import { ButtonLink } from '@/components/ui/Button'
 import { routes } from '@/lib/routes'
 
-/** Closing call to action that splits the two audiences cleanly. */
+/**
+ * Closing call to action that splits the two audiences cleanly, set over the
+ * Kampala skyline. Each path sits on its own solid panel, so the text never
+ * depends on the photograph for contrast.
+ */
 export function AudienceCta() {
   return (
-    <section aria-label="Next steps" className="bg-surface">
-      <div className="container-page grid gap-px bg-line py-0 md:grid-cols-2">
-        <div className="flex flex-col justify-between gap-8 bg-surface-muted px-6 py-12 sm:px-10 sm:py-16" data-aos="fade-right">
+    <PhotoBand image="kampalaSkyline" parallax overlay="light" aria-label="Next steps">
+      <div className="container-page grid gap-5 py-16 sm:py-24 md:grid-cols-2 md:gap-6">
+        <div className="flex flex-col justify-between gap-8 bg-white/95 p-7 text-ink sm:p-10" data-aos="fade-up">
           <div>
             <p className="font-display text-xs font-bold tracking-[0.18em] text-brand-red-dark uppercase">
               Looking for work?
@@ -21,11 +26,15 @@ export function AudienceCta() {
             Find a job
           </ButtonLink>
         </div>
-        <div className="flex flex-col justify-between gap-8 bg-brand-black px-6 py-12 text-white sm:px-10 sm:py-16" data-aos="fade-left" data-aos-delay="100">
+        <div
+          className="flex flex-col justify-between gap-8 border border-white/15 bg-brand-black/80 p-7 backdrop-blur-sm sm:p-10"
+          data-aos="fade-up"
+          data-aos-delay="100"
+        >
           <div>
             <p className="font-display text-xs font-bold tracking-[0.18em] text-brand-yellow uppercase">Hiring?</p>
             <h2 className="mt-3 text-3xl font-extrabold text-white">Tell us what your business needs</h2>
-            <p className="mt-3 max-w-md text-white/70">
+            <p className="mt-3 max-w-md text-white/75">
               Share the roles, numbers and start date. We come back to you to discuss the requirements before any
               recruitment starts.
             </p>
@@ -35,6 +44,6 @@ export function AudienceCta() {
           </ButtonLink>
         </div>
       </div>
-    </section>
+    </PhotoBand>
   )
 }

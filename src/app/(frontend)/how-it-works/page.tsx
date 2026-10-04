@@ -3,6 +3,7 @@ import { PageHeader } from '@/components/layout/PageHeader'
 import { AudienceCta } from '@/components/sections/AudienceCta'
 import { ProcessSteps } from '@/components/sections/ProcessSteps'
 import { ArrowLink } from '@/components/ui/Button'
+import { Photo } from '@/components/ui/Photo'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { business } from '@/config/business'
 import { employerSteps, jobSeekerSteps } from '@/content/recruitment'
@@ -64,7 +65,7 @@ export default function HowItWorksPage() {
               Send a recruitment request
             </ArrowLink>
           </div>
-          <ProcessSteps steps={employerSteps} />
+          <ProcessSteps steps={employerSteps} className="self-start" />
         </div>
       </section>
 
@@ -91,8 +92,15 @@ export default function HowItWorksPage() {
             <ArrowLink href={routes.jobs()} className="mt-8" data-aos="fade-up">
               Browse current vacancies
             </ArrowLink>
+            <Photo
+              image="interview"
+              aspect={[4, 3]}
+              sizes="(min-width: 1024px) 34vw, 100vw"
+              reveal
+              className="mt-10 aspect-[4/3]"
+            />
           </div>
-          <ProcessSteps steps={jobSeekerSteps} />
+          <ProcessSteps steps={jobSeekerSteps} className="self-start" />
         </div>
       </section>
 

@@ -5,9 +5,11 @@ import { cache } from 'react'
 import { ArticleCard } from '@/components/cards/ArticleCard'
 import { SafetyCallout } from '@/components/sections/SafetyCallout'
 import { JsonLd } from '@/components/seo/JsonLd'
+import { Photo } from '@/components/ui/Photo'
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs'
 import { ButtonLink } from '@/components/ui/Button'
 import { business } from '@/config/business'
+import { articleImageFor, stockShareImage } from '@/config/visuals'
 import { articlesRepo, servicesRepo, taxonomyRepo } from '@/data'
 import type { Article } from '@/domain/content/types'
 import { redirectOrNotFound } from '@/lib/cms-redirect'
@@ -37,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     type: 'article',
     publishedTime: article.publishedAt,
     modifiedTime: article.updatedAt,
-    image: article.seo.image ?? article.featuredImage ?? undefined,
+    image: article.seo.image ?? article.featuredImage ?? stockShareImage(articleImageFor(article)),
   })
 }
 
@@ -125,7 +127,7 @@ export default async function ArticlePage({ params }: Props) {
         </header>
 
         <div className="container-page max-w-4xl py-12 lg:py-16">
-          {article.featuredImage && (
+          {article.featuredImage ? (
             <figure className="mb-10 overflow-hidden bg-surface-sunken">
               <Image
                 src={article.featuredImage.url}
@@ -137,6 +139,14 @@ export default async function ArticlePage({ params }: Props) {
                 priority
               />
             </figure>
+          ) : (
+            // Illustrative photo until the article has a featured image of its own.
+            <Photo
+              image={articleImageFor(article)}
+              aspect={[16, 9]}
+              sizes="(min-width: 896px) 56rem, 100vw"
+              className="mb-10 aspect-[16/9]"
+            />
           )}
           {article.body && <div className="prose-content" dangerouslySetInnerHTML={{ __html: article.body.html }} />}
 

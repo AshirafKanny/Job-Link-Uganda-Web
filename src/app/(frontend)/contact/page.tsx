@@ -25,6 +25,7 @@ export default async function ContactPage() {
         eyebrow="Contact"
         title="Contact Job Link Uganda"
         lead="Choose the option that fits what you need, so your message reaches the right place."
+        image="conversation"
       />
 
       <div className="container-page py-12 lg:py-16">

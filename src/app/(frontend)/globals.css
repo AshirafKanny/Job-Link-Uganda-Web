@@ -561,3 +561,40 @@
     animation: none;
   }
 }
+
+/* ── Photography: parallax + hover ─────────────────────────────
+ * Parallax is CSS scroll-driven (no JavaScript, no scroll listeners): the
+ * photo drifts slightly as its section crosses the viewport. Browsers without
+ * scroll-driven animations, and reduced-motion users, get a still photo.
+ * Uses the individual `translate`/`scale` properties so it composes with the
+ * reveal animation, which uses `transform`.
+ */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .photo-parallax {
+      scale: 1.14;
+      animation: photo-parallax linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+  }
+}
+@keyframes photo-parallax {
+  from {
+    translate: 0 -6%;
+  }
+  to {
+    translate: 0 6%;
+  }
+}
+
+/* Subtle zoom for photos inside clickable cards. */
+@media (prefers-reduced-motion: no-preference) {
+  .photo-hover {
+    transition: scale 600ms var(--ease-out-soft);
+  }
+  .group:hover .photo-hover,
+  .group:focus-within .photo-hover {
+    scale: 1.04;
+  }
+}

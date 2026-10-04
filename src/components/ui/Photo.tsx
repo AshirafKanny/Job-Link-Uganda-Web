@@ -26,7 +26,13 @@ type Props = {
   priority?: boolean
   /** Scroll animation: the photo settles from a slight zoom as it enters the viewport. */
   reveal?: boolean
+  /** Background mode: the figure fills its positioned parent (use inside a `relative` container). */
+  fill?: boolean
+  /** Decorative use (e.g. behind text that carries the meaning): empty alt text. */
+  decorative?: boolean
   className?: string
+  /** Extra classes on the <img> itself (hover zoom, parallax). */
+  imgClassName?: string
 }
 
 /**
@@ -36,7 +42,17 @@ type Props = {
  * is shown (the Unsplash License does not require one); attribution is kept
  * in src/config/images.ts.
  */
-export function Photo({ image, sizes, aspect, priority = false, reveal = false, className }: Props) {
+export function Photo({
+  image,
+  sizes,
+  aspect,
+  priority = false,
+  reveal = false,
+  fill = false,
+  decorative = false,
+  className,
+  imgClassName,
+}: Props) {
   const photo = stockImages[image]
   const ratio = aspect ?? [photo.width, photo.height]
   const width = 1200
@@ -44,7 +60,8 @@ export function Photo({ image, sizes, aspect, priority = false, reveal = false, 
 
   return (
     <figure
-      className={cn('relative overflow-hidden bg-surface-sunken', className)}
+      // The sunken background is the fallback: if the image fails, the frame keeps its size and colour.
+      className={cn('overflow-hidden bg-surface-sunken', fill ? 'absolute inset-0' : 'relative', className)}
       data-aos={reveal ? 'image-reveal' : undefined}
     >
       {/* eslint-disable-next-line @next/next/no-img-element -- CDN-optimised srcset; next/image would re-process an already optimised source */}
@@ -54,11 +71,11 @@ export function Photo({ image, sizes, aspect, priority = false, reveal = false, 
         sizes={sizes}
         width={width}
         height={height}
-        alt={photo.alt}
+        alt={decorative ? '' : photo.alt}
         loading={priority ? 'eager' : 'lazy'}
         fetchPriority={priority ? 'high' : undefined}
         decoding={priority ? 'sync' : 'async'}
-        className="h-full w-full object-cover"
+        className={cn('h-full w-full object-cover', imgClassName)}
         style={{ objectPosition: photo.focus }}
       />
     </figure>

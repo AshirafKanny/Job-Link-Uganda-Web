@@ -97,6 +97,48 @@ export const stockImages = {
     focus: '50% 30%',
     credit: { name: 'Jeff Siepman', url: 'https://unsplash.com/photos/kyuPjZudBKs' },
   },
+  // Visual system (added 2026-10-04). Kampala photos are by Ugandan photographers.
+  kampalaSkyline: {
+    src: 'https://images.unsplash.com/photo-1763220207281-c4d0febb61a8',
+    width: 7938,
+    height: 5292,
+    alt: 'The Kampala skyline at sunset',
+    focus: '55% 45%',
+    credit: { name: 'Robin Kutesa', url: 'https://unsplash.com/photos/Q3ymlvOJGFs' },
+  },
+  // No visible brand or company signage (a photo showing a hotel's logo was rejected).
+  kampalaCity: {
+    src: 'https://images.unsplash.com/photo-1777887544354-74a7248c8a74',
+    width: 5468,
+    height: 3645,
+    alt: "Kampala's office towers rising among green trees",
+    focus: '45% 50%',
+    credit: { name: 'Michael Starkie', url: 'https://unsplash.com/photos/KWHsl_llyvc' },
+  },
+  jobSeekerLaptop: {
+    src: 'https://images.unsplash.com/photo-1765648684630-ac9c15ac98d5',
+    width: 4016,
+    height: 6016,
+    alt: 'A smiling young woman in a light blue shirt working on a laptop',
+    focus: '50% 32%',
+    credit: { name: 'FOTOGRAFÍA EDITORIAL', url: 'https://unsplash.com/photos/Ys9lVXQ-EhU' },
+  },
+  interview: {
+    src: 'https://images.unsplash.com/photo-1573497491208-6b1acb260507',
+    width: 5760,
+    height: 3840,
+    alt: 'Two women talking across a table by a window, in an interview setting',
+    focus: '60% 45%',
+    credit: { name: 'Christina @ wocintechchat.com', url: 'https://unsplash.com/photos/LQ1t-8Ms5PY' },
+  },
+  cvWriting: {
+    src: 'https://images.unsplash.com/photo-1616291554507-bc2c14742f81',
+    width: 3456,
+    height: 5184,
+    alt: 'A young woman in glasses writing notes with a pen',
+    focus: '45% 24%',
+    credit: { name: 'Baptista Ime James', url: 'https://unsplash.com/photos/c4hoY6orn8s' },
+  },
 } satisfies Record<string, StockImage>
 
 export type StockImageKey = keyof typeof stockImages

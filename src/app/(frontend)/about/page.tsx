@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { AudienceCta } from '@/components/sections/AudienceCta'
+import { PhotoBand } from '@/components/sections/PhotoBand'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { ArrowLink } from '@/components/ui/Button'
 import { Photo } from '@/components/ui/Photo'
@@ -83,7 +84,26 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      <section aria-labelledby="focus-heading" className="border-y border-line bg-surface-muted py-16 sm:py-20">
+      {/* Cinematic break: where we work. */}
+      <PhotoBand image="kampalaCity" parallax overlay="left" aria-labelledby="kampala-heading">
+        <div className="container-page py-20 sm:py-28">
+          <div className="max-w-xl" data-aos="fade-up">
+            <p className="flex items-center gap-3 font-display text-xs font-bold tracking-[0.18em] text-brand-yellow uppercase">
+              <span aria-hidden="true" className="h-0.5 w-6 bg-brand-yellow" />
+              Where we work
+            </p>
+            <h2 id="kampala-heading" className="mt-3 text-3xl font-extrabold text-white sm:text-4xl">
+              Based in Kampala, recruiting for Kampala businesses
+            </h2>
+            <p className="mt-4 text-lg text-white/80">
+              We work with restaurants, hotels and other employers in the city, and with job seekers looking for genuine
+              work close to home.
+            </p>
+          </div>
+        </div>
+      </PhotoBand>
+
+      <section aria-labelledby="focus-heading" className="border-b border-line bg-surface-muted py-16 sm:py-20">
         <div className="container-page">
           <SectionHeading
             id="focus-heading"
