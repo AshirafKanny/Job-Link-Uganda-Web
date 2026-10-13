@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import { APIError, type CollectionConfig } from 'payload'
 import { anyone, isStaff } from '../access'
 
 /**
@@ -14,6 +14,22 @@ export const Media: CollectionConfig = {
     create: isStaff,
     update: isStaff,
     delete: isStaff,
+  },
+  hooks: {
+    beforeOperation: [
+      ({ operation }) => {
+        // Vercel's filesystem is read-only: without cloud storage (S3_* variables, see
+        // docs/04-deployment-guide.md, Step 2) an upload can only fail. Say why, clearly.
+        if ((operation === 'create' || operation === 'update') && process.env.VERCEL && !process.env.S3_BUCKET) {
+          throw new APIError(
+            'Image storage is not set up yet, so images cannot be uploaded. Add the Cloudflare R2 storage settings (S3_BUCKET and related variables) in Vercel, then redeploy.',
+            503,
+            null,
+            true,
+          )
+        }
+      },
+    ],
   },
   upload: {
     staticDir: 'media',
