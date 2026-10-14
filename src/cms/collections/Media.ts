@@ -20,7 +20,7 @@ export const Media: CollectionConfig = {
       ({ operation }) => {
         // Vercel's filesystem is read-only: without cloud storage (S3_* variables, see
         // docs/04-deployment-guide.md, Step 2) an upload can only fail. Say why, clearly.
-        if ((operation === 'create' || operation === 'update') && process.env.VERCEL && !process.env.S3_BUCKET) {
+        if ((operation === 'create' || operation === 'update') && process.env.VERCEL && !process.env.S3_BUCKET?.trim()) {
           throw new APIError(
             'Image storage is not set up yet, so images cannot be uploaded. Add the Cloudflare R2 storage settings (S3_BUCKET and related variables) in Vercel, then redeploy.',
             503,

@@ -60,7 +60,11 @@ const plugins: Plugin[] = [
 ]
 
 // Public media goes to S3-compatible storage in production; local disk in development.
-if (process.env.S3_BUCKET) {
+// Trimmed: a stray space or line break pasted into a Vercel variable (it happened with
+// S3_ENDPOINT) silently broke every upload.
+const storageEnv = (name: string) => process.env[name]?.trim() || undefined
+
+if (storageEnv('S3_BUCKET')) {
   plugins.push(
     s3Storage({
       collections: { media: true },
@@ -69,18 +73,18 @@ if (process.env.S3_BUCKET) {
       // server failed (HTTP 413) for ordinary photos and designed graphics.
       // Requires a CORS rule on the bucket allowing PUT from the site (docs/04, Step 2).
       clientUploads: true,
-      bucket: process.env.S3_BUCKET,
+      bucket: storageEnv('S3_BUCKET')!,
       config: {
-        region: process.env.S3_REGION || 'auto',
-        endpoint: process.env.S3_ENDPOINT || undefined,
+        region: storageEnv('S3_REGION') ?? 'auto',
+        endpoint: storageEnv('S3_ENDPOINT'),
         // Cloudflare R2 compatibility (also valid for AWS S3): path-style URLs, and only
         // the checksums the operation requires (newer SDK defaults add headers R2 may reject).
         forcePathStyle: true,
         requestChecksumCalculation: 'WHEN_REQUIRED',
         responseChecksumValidation: 'WHEN_REQUIRED',
         credentials: {
-          accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
-          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+          accessKeyId: storageEnv('S3_ACCESS_KEY_ID') ?? '',
+          secretAccessKey: storageEnv('S3_SECRET_ACCESS_KEY') ?? '',
         },
       },
     }),
