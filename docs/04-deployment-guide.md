@@ -72,6 +72,19 @@ git push
 | Endpoint (`https://<ACCOUNT_ID>.r2.cloudflarestorage.com`) | `S3_ENDPOINT` |
 | Bucket name `joblink-media` | `S3_BUCKET` |
 
+6. **Allow uploads from the website (CORS).** Images go from the admin straight to R2 (Vercel rejects request bodies over 4.5 MB). Open the bucket → **Settings → CORS Policy → Add CORS policy**, paste this and save:
+
+```json
+[
+  {
+    "AllowedOrigins": ["https://www.joblinkuganda.com", "https://joblinkuganda.com"],
+    "AllowedMethods": ["PUT", "GET", "HEAD"],
+    "AllowedHeaders": ["*"],
+    "MaxAgeSeconds": 3600
+  }
+]
+```
+
 ---
 
 ## Step 3: Create spam protection (Cloudflare Turnstile)

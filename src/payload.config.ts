@@ -63,6 +63,11 @@ if (process.env.S3_BUCKET) {
   plugins.push(
     s3Storage({
       collections: { media: true },
+      // The browser uploads straight to the bucket with a short-lived signed URL.
+      // Vercel rejects request bodies over 4.5 MB, so routing files through the
+      // server failed (HTTP 413) for ordinary photos and designed graphics.
+      // Requires a CORS rule on the bucket allowing PUT from the site (docs/04, Step 2).
+      clientUploads: true,
       bucket: process.env.S3_BUCKET,
       config: {
         region: process.env.S3_REGION || 'auto',
