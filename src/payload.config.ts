@@ -36,14 +36,19 @@ const allowedOrigins =
   process.env.NODE_ENV === 'production'
     ? [site.url]
     : Array.from(
-        new Set([site.url, site.url.replace('127.0.0.1', 'localhost'), site.url.replace('localhost', '127.0.0.1')]),
+        new Set([
+          site.url,
+          site.url.replace('127.0.0.1', 'localhost'),
+          site.url.replace('localhost', '127.0.0.1'),
+        ]),
       )
 
 const plugins: Plugin[] = [
   seoPlugin({
     collections: ['services', 'articles', 'job-categories', 'article-categories'],
     uploadsCollection: 'media',
-    generateTitle: ({ doc }) => (doc as { title?: string; name?: string })?.title ?? (doc as { name?: string })?.name ?? '',
+    generateTitle: ({ doc }) =>
+      (doc as { title?: string; name?: string })?.title ?? (doc as { name?: string })?.name ?? '',
     generateDescription: ({ doc }) => {
       const d = doc as { excerpt?: string; summary?: string; intro?: string; description?: string }
       return d?.excerpt ?? d?.summary ?? d?.intro ?? d?.description ?? ''
@@ -64,32 +69,36 @@ const plugins: Plugin[] = [
 // S3_ENDPOINT) silently broke every upload.
 const storageEnv = (name: string) => process.env[name]?.trim() || undefined
 
-if (storageEnv('S3_BUCKET')) {
-  plugins.push(
-    s3Storage({
-      collections: { media: true },
-      // The browser uploads straight to the bucket with a short-lived signed URL.
-      // Vercel rejects request bodies over 4.5 MB, so routing files through the
-      // server failed (HTTP 413) for ordinary photos and designed graphics.
-      // Requires a CORS rule on the bucket allowing PUT from the site (docs/04, Step 2).
-      clientUploads: true,
-      bucket: storageEnv('S3_BUCKET')!,
-      config: {
-        region: storageEnv('S3_REGION') ?? 'auto',
-        endpoint: storageEnv('S3_ENDPOINT'),
-        // Cloudflare R2 compatibility (also valid for AWS S3): path-style URLs, and only
-        // the checksums the operation requires (newer SDK defaults add headers R2 may reject).
-        forcePathStyle: true,
-        requestChecksumCalculation: 'WHEN_REQUIRED',
-        responseChecksumValidation: 'WHEN_REQUIRED',
-        credentials: {
-          accessKeyId: storageEnv('S3_ACCESS_KEY_ID') ?? '',
-          secretAccessKey: storageEnv('S3_SECRET_ACCESS_KEY') ?? '',
-        },
+// Always registered, enabled only when a bucket is configured. alwaysInsertFields keeps
+// the plugin's hidden `_objectKey` field in the schema either way, so the database is
+// the same locally (no bucket) and in production. Without it, migrations generated
+// locally lacked the column and the media library failed in production.
+plugins.push(
+  s3Storage({
+    enabled: Boolean(storageEnv('S3_BUCKET')),
+    alwaysInsertFields: true,
+    collections: { media: true },
+    // The browser uploads straight to the bucket with a short-lived signed URL.
+    // Vercel rejects request bodies over 4.5 MB, so routing files through the
+    // server failed (HTTP 413) for ordinary photos and designed graphics.
+    // Requires a CORS rule on the bucket allowing PUT from the site (docs/04, Step 2).
+    clientUploads: true,
+    bucket: storageEnv('S3_BUCKET') ?? '',
+    config: {
+      region: storageEnv('S3_REGION') ?? 'auto',
+      endpoint: storageEnv('S3_ENDPOINT'),
+      // Cloudflare R2 compatibility (also valid for AWS S3): path-style URLs, and only
+      // the checksums the operation requires (newer SDK defaults add headers R2 may reject).
+      forcePathStyle: true,
+      requestChecksumCalculation: 'WHEN_REQUIRED',
+      responseChecksumValidation: 'WHEN_REQUIRED',
+      credentials: {
+        accessKeyId: storageEnv('S3_ACCESS_KEY_ID') ?? '',
+        secretAccessKey: storageEnv('S3_SECRET_ACCESS_KEY') ?? '',
       },
-    }),
-  )
-}
+    },
+  }),
+)
 
 export default buildConfig({
   serverURL: site.url,
