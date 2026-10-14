@@ -14,6 +14,7 @@ import { isAdmin, isStaff } from './cms/access'
 import { Articles, Services } from './cms/collections/content'
 import { Jobs } from './cms/collections/Jobs'
 import { Media } from './cms/collections/Media'
+import { storageCheckEndpoint } from './cms/endpoints/storage-check'
 import { candidateCollections } from './cms/collections/private/candidates'
 import { Employers } from './cms/collections/private/Employers'
 import { PageViews } from './cms/collections/private/PageViews'
@@ -90,6 +91,8 @@ export default buildConfig({
   serverURL: site.url,
   cors: allowedOrigins,
   csrf: allowedOrigins,
+  // Temporary admin-only image storage diagnostic (see the file).
+  endpoints: [storageCheckEndpoint],
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
