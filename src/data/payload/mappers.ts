@@ -38,11 +38,24 @@ function populated<T extends object>(value: Populated<T>): T | null {
 const idOf = (value: Populated<{ id: number }>) =>
   value == null ? null : String(typeof value === 'object' ? value.id : value)
 
+/**
+ * Payload returns media URLs prefixed with the server URL
+ * (https://www.joblinkuganda.com/api/media/file/...). The Next image
+ * optimiser only allows that route as a local path, so an absolute URL was
+ * rejected (400) and uploaded images showed as an empty box. Use the
+ * site-relative path; share images are made absolute again in buildMetadata.
+ */
+function siteRelativeMediaUrl(url: string): string {
+  if (!/^https?:\/\//.test(url)) return url
+  const parsed = new URL(url)
+  return parsed.pathname.startsWith('/api/media/file/') ? `${parsed.pathname}${parsed.search}` : url
+}
+
 export function toImage(value: Populated<MediaDoc>): ImageAsset | null {
   const media = populated(value)
   if (!media?.url) return null
   return {
-    url: media.url,
+    url: siteRelativeMediaUrl(media.url),
     alt: media.alt,
     width: media.width ?? null,
     height: media.height ?? null,
