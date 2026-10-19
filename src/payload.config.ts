@@ -1,7 +1,7 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { EXPERIMENTAL_TableFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { s3Storage } from '@payloadcms/storage-s3'
 import path from 'path'
 import { buildConfig, type Plugin } from 'payload'
@@ -15,6 +15,7 @@ import { Articles, Services } from './cms/collections/content'
 import { Jobs } from './cms/collections/Jobs'
 import { Media } from './cms/collections/Media'
 import { storageCheckEndpoint } from './cms/endpoints/storage-check'
+import { PasteTablesFeature } from './cms/lexical/paste-tables/feature.server'
 import { candidateCollections } from './cms/collections/private/candidates'
 import { Employers } from './cms/collections/private/Employers'
 import { PageViews } from './cms/collections/private/PageViews'
@@ -139,7 +140,11 @@ export default buildConfig({
     Users,
   ],
   globals: [SiteSettings],
-  editor: lexicalEditor(),
+  // Tables: pasted HTML tables import as real table nodes; PasteTablesFeature handles
+  // Markdown / tab-separated tables from plain-text clipboards (AI "Copy" buttons).
+  editor: lexicalEditor({
+    features: ({ defaultFeatures }) => [...defaultFeatures, EXPERIMENTAL_TableFeature(), PasteTablesFeature()],
+  }),
   graphQL: { disable: true },
   secret: process.env.PAYLOAD_SECRET,
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },

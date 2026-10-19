@@ -1,6 +1,7 @@
 import 'server-only'
 import { convertLexicalToHTML, LinkHTMLConverter } from '@payloadcms/richtext-lexical/html'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
+import { tableHTMLConverters } from './table-html'
 import type {
   Article as ArticleDoc,
   ArticleCategory as ArticleCategoryDoc,
@@ -83,6 +84,7 @@ function toRichText(value: unknown): RichText | null {
     disableTextAlign: true,
     converters: ({ defaultConverters }) => ({
       ...defaultConverters,
+      ...tableHTMLConverters,
       ...LinkHTMLConverter({
         internalDocToHref: ({ linkNode }) => {
           const { relationTo, value: doc } = linkNode.fields.doc ?? {}

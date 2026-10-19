@@ -400,6 +400,69 @@
     padding-left: 1.1em;
     color: var(--color-ink-muted);
   }
+
+  /* Tables (rendered by src/data/payload/table-html.ts). The wrapper scrolls
+     sideways on narrow screens so a wide table never widens the page. */
+  & .table-scroll {
+    margin-top: 1.6em;
+    margin-bottom: 1.6em;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    background: var(--color-surface);
+  }
+  & .table-scroll:focus-visible {
+    outline: 3px solid var(--color-brand-red);
+    outline-offset: 2px;
+  }
+  & .content-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    text-align: left;
+  }
+  & .content-table th,
+  & .content-table td {
+    padding: 0.7rem 1rem;
+    vertical-align: top;
+    border-bottom: 1px solid var(--color-line);
+    /* Readable columns on phones: no squeezed one-word-per-line cells. */
+    min-width: 9rem;
+    overflow-wrap: anywhere;
+  }
+  & .content-table thead th {
+    background: var(--color-brand-black);
+    color: #fff;
+    font-family: var(--font-montserrat), sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-bottom: 3px solid var(--color-brand-yellow);
+  }
+  & .content-table tbody th {
+    font-weight: 650;
+  }
+  & .content-table tbody tr:nth-child(even) {
+    background: var(--color-surface-muted);
+  }
+  & .content-table tbody tr:last-child > * {
+    border-bottom: 0;
+  }
+  /* Cell content comes from rich text: paragraphs and lists sit tight. */
+  & .content-table :is(th, td) > * + * {
+    margin-top: 0.5em;
+  }
+  & .content-table :is(th, td) p {
+    margin: 0;
+  }
+  & .content-table :is(th, td) ul,
+  & .content-table :is(th, td) ol {
+    margin-top: 0.3em;
+  }
 }
 
 /* ── Floating WhatsApp button ─────────────────────────────────
