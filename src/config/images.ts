@@ -139,6 +139,55 @@ export const stockImages = {
     focus: '45% 24%',
     credit: { name: 'Baptista Ime James', url: 'https://unsplash.com/photos/c4hoY6orn8s' },
   },
+  // Casual & event staffing (added 2026-10-20). Illustrative: not Job Link staff, events or clients.
+  weddingReception: {
+    src: 'https://images.unsplash.com/photo-1772127822525-7eda37383b9f',
+    width: 8736,
+    height: 5824,
+    alt: 'An outdoor wedding reception laid out under white draped canopies, with dressed tables and chairs on a lawn',
+    focus: '50% 55%',
+    credit: { name: 'Vidit Goswami', url: 'https://unsplash.com/photos/Zi_NOBHIk9A' },
+  },
+  weddingCeremony: {
+    src: 'https://images.unsplash.com/photo-1783981914249-d6c44b10dc7f',
+    width: 6240,
+    height: 4160,
+    alt: 'A bride and groom at their wedding ceremony, with a groomsman in a white jacket behind them',
+    focus: '35% 40%',
+    credit: { name: 'Clinton Mwebaze', url: 'https://unsplash.com/photos/QSsQJ0TngzM' },
+  },
+  corporateEvent: {
+    src: 'https://images.unsplash.com/photo-1644174547761-de211415598e',
+    width: 6336,
+    height: 4800,
+    alt: 'Guests seated at dressed round tables during a large formal conference dinner',
+    focus: '50% 55%',
+    credit: { name: 'Andrea Qoqonga', url: 'https://unsplash.com/photos/dxyyr_UzH6Q' },
+  },
+  eventTableSetting: {
+    src: 'https://images.unsplash.com/photo-1759124650320-d629a3d73d9f',
+    width: 6016,
+    height: 4016,
+    alt: 'Round event tables dressed with linen, gold chairs and tall flower arrangements',
+    focus: '45% 50%',
+    credit: { name: 'Michael Kyule', url: 'https://unsplash.com/photos/rJWykl03fbA' },
+  },
+  waiterTray: {
+    src: 'https://images.unsplash.com/photo-1516788875874-c5912cae7b43',
+    width: 4912,
+    height: 3264,
+    alt: 'A waiter in a white jacket carrying a tray of drinks through a reception',
+    focus: '62% 45%',
+    credit: { name: 'Kate Townsend', url: 'https://unsplash.com/photos/hEC6zxdFF0M' },
+  },
+  housekeeping: {
+    src: 'https://images.unsplash.com/photo-1580256081112-e49377338b7f',
+    width: 4000,
+    height: 6000,
+    alt: 'A housekeeping trolley and vacuum cleaner in a hotel corridor',
+    focus: '50% 60%',
+    credit: { name: 'Ashwini Chaudhary (Monty)', url: 'https://unsplash.com/photos/Iu6parQAO-U' },
+  },
 } satisfies Record<string, StockImage>
 
 export type StockImageKey = keyof typeof stockImages

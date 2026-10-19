@@ -1,5 +1,6 @@
 import 'server-only'
 import { site } from '@/config/site'
+import { staffingCategories } from '@/content/staffing'
 import { allTrainingPackages, formatUgx } from '@/content/training'
 import { enquiriesRepo, servicesRepo } from '@/data'
 import type { RecruitmentRequestInput } from '@/data/repositories'
@@ -35,6 +36,7 @@ export async function notifyRecruitmentRequest({ id, input, submittedAt, sendCon
       ...input,
       id,
       serviceTitle: service?.title ?? input.serviceSlug,
+      staffingTypeName: staffingCategories.find((c) => c.id === input.staffingType)?.title ?? null,
       trainingPackageName: trainingPackage ? `${trainingPackage.name} — ${formatUgx(trainingPackage.price)}` : null,
       submittedAt,
     },

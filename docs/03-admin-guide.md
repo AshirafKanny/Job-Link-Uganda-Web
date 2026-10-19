@@ -207,12 +207,13 @@ Open the job, set the **Status** to **Closed**, choose a **Close reason** (*Fill
 
 ---
 
-## 9. Employer enquiries ("Request staff" and "Book workplace training")
+## 9. Enquiries ("Request staff", "Book workplace training", "Casual & event staffing")
 
 Two website forms create employer enquiries, and both appear in **Private records → Recruitment requests**:
 
 - **Request staff** (`/hire-staff`): a business wants to hire. *Enquiry type: Hire staff.*
 - **Book workplace training** (`/hospitality-training/book`): a business wants its existing staff trained. *Enquiry type: Hospitality training*, with the **Training package** they chose (if any).
+- **Casual & event staffing** (`/recruitment-services/casual-and-event-staffing`): someone needs ushers, waiters or casual workers for an event or short assignment. *Enquiry type: Casual & event staffing*, with **Type of staff** and **Duration / working hours** in the sidebar. **Roles needed** holds their description of the event. Private clients (e.g. a couple) may leave the organisation empty; it then shows as *Private client*. The email subject is "NEW STAFFING REQUEST — [type] — [client]".
 
 For each one:
 1. Open it to see the business, contact person, phone and details. For hiring, the **Service** field shows which service page they came from; for training, **Roles needed** holds the staff to train and **Message** what the training should improve.

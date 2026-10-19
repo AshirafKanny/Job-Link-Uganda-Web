@@ -14,7 +14,7 @@ export const RecruitmentRequests: CollectionConfig = {
     useAsTitle: 'businessName',
     group: 'Private records',
     defaultColumns: ['businessName', 'contactName', 'enquiryType', 'status', 'createdAt'],
-    description: 'Employer enquiries from the website: requests to hire staff, and requests for hospitality training.',
+    description: 'Enquiries from the website: requests to hire staff, for hospitality training, and for casual & event staff.',
   },
   access: { read: canManageRecruitment, create: nobody, update: canManageRecruitment, delete: isAdmin },
   fields: [
@@ -27,8 +27,21 @@ export const RecruitmentRequests: CollectionConfig = {
       options: [
         { label: 'Hire staff', value: 'recruitment' },
         { label: 'Hospitality training', value: 'training' },
+        { label: 'Casual & event staffing', value: 'staffing' },
       ],
       admin: { position: 'sidebar', readOnly: true },
+    },
+    {
+      name: 'staffingType',
+      label: 'Type of staff',
+      type: 'text',
+      admin: { position: 'sidebar', readOnly: true, condition: (data) => data?.enquiryType === 'staffing' },
+    },
+    {
+      name: 'workingHours',
+      label: 'Duration / working hours',
+      type: 'text',
+      admin: { position: 'sidebar', readOnly: true, condition: (data) => data?.enquiryType === 'staffing' },
     },
     {
       name: 'trainingPackage',

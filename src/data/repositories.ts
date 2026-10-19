@@ -79,10 +79,13 @@ export type RecruitmentRequestInput = {
   preferredStartDate: string | null
   message: string | null
   serviceSlug: string | null
-  /** Staff to hire, or existing staff to train. */
-  enquiryType: 'recruitment' | 'training'
+  /** Staff to hire, existing staff to train, or casual/event staff. */
+  enquiryType: 'recruitment' | 'training' | 'staffing'
   /** Training package id, for training enquiries. */
   trainingPackage: string | null
+  /** Casual/event staffing: category id and expected duration or hours. */
+  staffingType: string | null
+  workingHours: string | null
   sourcePath: string
 }
 

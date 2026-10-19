@@ -361,6 +361,8 @@ export interface Media {
    * Link to the original photo page
    */
   creditUrl?: string | null;
+  prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -538,14 +540,16 @@ export interface ArticleCategory {
   createdAt: string;
 }
 /**
- * Employer enquiries from the website: requests to hire staff, and requests for hospitality training.
+ * Enquiries from the website: requests to hire staff, for hospitality training, and for casual & event staff.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "recruitment-requests".
  */
 export interface RecruitmentRequest {
   id: number;
-  enquiryType: 'recruitment' | 'training';
+  enquiryType: 'recruitment' | 'training' | 'staffing';
+  staffingType?: string | null;
+  workingHours?: string | null;
   trainingPackage?: string | null;
   businessName: string;
   contactName: string;
@@ -940,6 +944,8 @@ export interface MediaSelect<T extends boolean = true> {
   source?: T;
   creditName?: T;
   creditUrl?: T;
+  prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -1017,6 +1023,8 @@ export interface EmployersSelect<T extends boolean = true> {
  */
 export interface RecruitmentRequestsSelect<T extends boolean = true> {
   enquiryType?: T;
+  staffingType?: T;
+  workingHours?: T;
   trainingPackage?: T;
   businessName?: T;
   contactName?: T;

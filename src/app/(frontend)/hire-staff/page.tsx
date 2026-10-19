@@ -77,6 +77,16 @@ export default async function HireStaffPage({ searchParams }: Props) {
           </div>
 
           <div className="border-t border-line pt-8">
+            <h2 className="font-display text-xs font-bold tracking-[0.16em] uppercase">Staff for an event?</h2>
+            <p className="mt-3 text-[0.95rem] text-ink-muted">
+              For wedding ushers, event staff or casual workers for a few days, use our casual & event staffing request.
+            </p>
+            <ArrowLink href={`${routes.casualStaffing()}#request`} className="mt-3">
+              Casual & event staffing
+            </ArrowLink>
+          </div>
+
+          <div className="border-t border-line pt-8">
             <h2 className="font-display text-xs font-bold tracking-[0.16em] uppercase">Your information</h2>
             <p className="mt-3 flex gap-3 text-[0.95rem] text-ink-muted">
               <Icon name="shield" size={20} className="mt-0.5 shrink-0 text-ink" />

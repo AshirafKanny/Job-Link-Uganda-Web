@@ -1,8 +1,9 @@
 import { z } from 'zod'
+import { staffingCategoryIds } from '@/content/staffing'
 import { allTrainingPackages } from '@/content/training'
 
-/** Employer enquiries arrive through one form in two modes: staff to hire, or staff to train. */
-export const ENQUIRY_TYPES = ['recruitment', 'training'] as const
+/** Employer enquiries arrive through one form in three modes: staff to hire, staff to train, or casual/event staff. */
+export const ENQUIRY_TYPES = ['recruitment', 'training', 'staffing'] as const
 export type EnquiryType = (typeof ENQUIRY_TYPES)[number]
 
 /** Collapses whitespace and strips control characters from free text. */
@@ -23,7 +24,8 @@ const optionalText = (max: number) =>
  */
 export const recruitmentRequestSchema = z.object({
   contactName: text(100).pipe(z.string().min(2, 'Please enter your name.')),
-  businessName: text(150).pipe(z.string().min(2, 'Please enter your business name.')),
+  /** Required except for casual/event staffing, where private clients (e.g. a couple) have no organisation. */
+  businessName: text(150),
   phone: text(30).pipe(
     z.string().regex(/^\+?[0-9\s()-]{9,20}$/, 'Please enter a valid phone number, e.g. 07XX XXX XXX or +256 7XX XXX XXX.'),
   ),
@@ -49,7 +51,14 @@ export const recruitmentRequestSchema = z.object({
   trainingPackage: optionalText(60).pipe(
     z.union([z.null(), z.enum(allTrainingPackages.map((p) => p.id) as [string, ...string[]])]),
   ),
+  /** Casual/event staffing only: which kind of staff, and how long they are needed. */
+  staffingType: optionalText(60).pipe(z.union([z.null(), z.enum(staffingCategoryIds)])),
+  workingHours: optionalText(150),
   consent: z.literal('on', { error: 'Please confirm you agree to us using these details to respond to your enquiry.' }),
+}).superRefine((data, ctx) => {
+  if (data.enquiryType !== 'staffing' && data.businessName.length < 2) {
+    ctx.addIssue({ code: 'custom', path: ['businessName'], message: 'Please enter your business name.' })
+  }
 })
 
 export type RecruitmentRequestFields = keyof z.input<typeof recruitmentRequestSchema>
@@ -81,6 +90,8 @@ export const RECRUITMENT_REQUEST_FIELDS: RecruitmentRequestFields[] = [
   'message',
   'enquiryType',
   'trainingPackage',
+  'staffingType',
+  'workingHours',
   'consent',
 ]
 

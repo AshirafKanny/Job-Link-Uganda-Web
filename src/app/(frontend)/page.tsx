@@ -14,6 +14,7 @@ import { Photo } from '@/components/ui/Photo'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { business } from '@/config/business'
 import { employerReasons, employerSteps, hospitalityRoleGroups, jobSeekerSteps } from '@/content/recruitment'
+import { staffingOccasions } from '@/content/staffing'
 import { formatUgx, individualPackages, trainingFocusAreas, workplacePackages } from '@/content/training'
 import { articlesRepo, jobsRepo, servicesRepo, settingsRepo } from '@/data'
 import { categorySlugs, routes, serviceSlugs } from '@/lib/routes'
@@ -350,7 +351,63 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* 08 — Why businesses work with Job Link */}
+      {/* 08 — Casual & event staffing: "more than recruitment", right after the services overview */}
+      <section aria-labelledby="occasions-heading" className="bg-brand-black py-20 text-white sm:py-28">
+        <div className="container-page">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+            <SectionHeading
+              id="occasions-heading"
+              tone="inverse"
+              eyebrow="More than recruitment"
+              title="The right people for every occasion"
+              lead="Need ushers for a wedding, temporary waiters for a reception, or casual workers for a short-term assignment? Job Link Uganda helps individuals and organisations find suitable staff."
+              data-aos="fade-up"
+            />
+            <div className="flex shrink-0 flex-wrap items-center gap-x-6 gap-y-3" data-aos="fade-up">
+              <ButtonLink href={routes.casualStaffing()} variant="primary" arrow>
+                Explore casual & event staffing
+              </ButtonLink>
+              <Link
+                href={`${routes.casualStaffing()}#request`}
+                className="font-display font-bold text-white underline-offset-4 hover:underline"
+              >
+                Request staff
+              </Link>
+            </div>
+          </div>
+          <ul className="mt-12 grid gap-5 md:grid-cols-3">
+            {staffingOccasions.map((occasion, i) => (
+              <li key={occasion.title} className="group relative" data-aos="fade-up" data-aos-delay={i * 100}>
+                <Photo
+                  image={occasion.image}
+                  aspect={[4, 5]}
+                  sizes="(min-width: 768px) 30vw, 100vw"
+                  decorative
+                  className="aspect-[4/5] md:aspect-[3/4]"
+                  imgClassName="photo-hover"
+                />
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,13,13,0)_35%,rgba(13,13,13,0.9)_100%)]"
+                />
+                <div className="absolute inset-x-0 bottom-0 p-6">
+                  <h3 className="text-xl font-extrabold text-white">
+                    <Link
+                      href={`${routes.casualStaffing()}?type=${occasion.category}#request`}
+                      className="after:absolute after:inset-0 group-hover:underline group-hover:underline-offset-4"
+                    >
+                      {occasion.title}
+                    </Link>
+                  </h3>
+                  <p className="mt-2 text-[0.95rem] text-white/80">{occasion.text}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* 09 — Why businesses work with Job Link */}
       <section aria-labelledby="why-heading" className="border-y border-line bg-surface-muted py-20 sm:py-24">
         <div className="container-page grid gap-12 lg:grid-cols-[0.9fr_1.4fr] lg:gap-20">
           <div className="lg:sticky lg:top-28 lg:self-start">
@@ -377,7 +434,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 09 — Career resources */}
+      {/* 10 — Career resources */}
       <section aria-labelledby="resources-heading" className="py-20 sm:py-24">
         <div className="container-page">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
@@ -404,7 +461,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 10 — Transparency */}
+      {/* 11 — Transparency */}
       <section aria-labelledby="transparency-heading" className="border-t border-line bg-surface-muted py-20 sm:py-24">
         <div className="container-page">
           <SectionHeading
@@ -443,7 +500,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 11 — Final CTA */}
+      {/* 12 — Final CTA */}
       <AudienceCta />
     </>
   )

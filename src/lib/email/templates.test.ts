@@ -83,6 +83,19 @@ describe('training enquiries', () => {
   })
 })
 
+describe('staffing requests', () => {
+  const email = recruitmentRequestNotification(
+    { ...data, enquiryType: 'staffing', businessName: 'Private client', staffingTypeName: 'Wedding ushers', workingHours: '2pm to 11pm', rolesNeeded: 'Wedding for 300 guests' },
+    SITE,
+  )
+  it('name the staff type and show the staffing details', () => {
+    expect(email.subject).toBe('NEW STAFFING REQUEST — Wedding ushers — Private client')
+    expect(email.text).toContain('Duration / working hours:\n2pm to 11pm')
+    expect(email.text).toContain('Event or assignment:\nWedding for 300 guests')
+    expect(recruitmentRequestConfirmation(SITE, 'staffing').subject).toBe('We received your staffing request — Job Link Uganda')
+  })
+})
+
 describe('recruitmentRequestConfirmation', () => {
   it('contains no visitor-supplied content', () => {
     const email = recruitmentRequestConfirmation(SITE)

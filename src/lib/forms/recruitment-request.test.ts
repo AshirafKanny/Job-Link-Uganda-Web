@@ -49,6 +49,13 @@ describe('recruitmentRequestSchema', () => {
     expect(recruitmentRequestSchema.safeParse({ ...valid, enquiryType: 'newsletter' }).success).toBe(false)
   })
 
+  it('makes the organisation optional only for casual/event staffing', () => {
+    const staffing = { ...valid, businessName: '', enquiryType: 'staffing', staffingType: 'wedding-ushers', workingHours: '2pm to 11pm' }
+    expect(recruitmentRequestSchema.parse(staffing)).toMatchObject({ enquiryType: 'staffing', staffingType: 'wedding-ushers', businessName: '' })
+    expect(recruitmentRequestSchema.safeParse({ ...valid, businessName: '' }).success).toBe(false)
+    expect(recruitmentRequestSchema.safeParse({ ...staffing, staffingType: 'bouncers' }).success).toBe(false)
+  })
+
   it('rejects unexpected service slugs', () => {
     expect(recruitmentRequestSchema.safeParse({ ...valid, serviceSlug: '<script>' }).success).toBe(false)
   })

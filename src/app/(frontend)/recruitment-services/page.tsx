@@ -131,7 +131,19 @@ export default async function RecruitmentServicesPage() {
             Read the full employer process
           </ArrowLink>
 
-          <div className="mt-14 flex flex-col gap-4 border-l-4 border-brand-yellow bg-surface-muted p-6 sm:flex-row sm:items-center sm:justify-between" data-aos="fade-up">
+          <div className="mt-14 flex flex-col gap-4 border-l-4 border-brand-red bg-surface-muted p-6 sm:flex-row sm:items-center sm:justify-between" data-aos="fade-up">
+            <div>
+              <h3 className="text-lg font-bold">Need staff for an event or a few days?</h3>
+              <p className="mt-1 text-ink-muted">
+                Wedding ushers, event ushers, waiters and other casual workers for occasions and short-term assignments.
+              </p>
+            </div>
+            <ArrowLink href={routes.casualStaffing()} className="shrink-0">
+              Casual & event staffing
+            </ArrowLink>
+          </div>
+
+          <div className="mt-4 flex flex-col gap-4 border-l-4 border-brand-yellow bg-surface-muted p-6 sm:flex-row sm:items-center sm:justify-between" data-aos="fade-up">
             <div>
               <h3 className="text-lg font-bold">Already have a team? We can train them too.</h3>
               <p className="mt-1 text-ink-muted">

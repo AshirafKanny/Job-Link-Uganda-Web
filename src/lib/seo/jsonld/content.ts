@@ -72,6 +72,32 @@ export function trainingServiceJsonLd(
   }
 }
 
+/**
+ * Casual & event staffing as a Service, listing the staff types the page
+ * shows. No prices are published, so the offers carry none.
+ */
+export function staffingServiceJsonLd(description: string, staffTypes: string[]): WithContext<Service> {
+  const url = absoluteUrl(routes.casualStaffing())
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Casual & event staffing',
+    serviceType: 'Casual and event staffing',
+    description,
+    url,
+    provider: { '@id': ORGANIZATION_ID },
+    areaServed: business.areasServed.map((name) => ({ '@type': 'Place' as const, name })),
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Casual and event staff',
+      itemListElement: staffTypes.map((name) => ({
+        '@type': 'Offer' as const,
+        itemOffered: { '@type': 'Service' as const, name },
+      })),
+    },
+  }
+}
+
 /** Only for pages that visibly render these exact questions and answers. */
 export function faqJsonLd(faqs: Faq[]): WithContext<FAQPage> | null {
   if (faqs.length === 0) return null

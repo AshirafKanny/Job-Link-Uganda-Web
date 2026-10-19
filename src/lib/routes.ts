@@ -21,6 +21,8 @@ export const routes = {
   services: () => '/recruitment-services',
   service: (serviceSlug: string) => `/recruitment-services/${serviceSlug}`,
   hireStaff: () => '/hire-staff',
+  /** Code-built service page (a static segment; takes precedence over the CMS [slug] route). */
+  casualStaffing: () => '/recruitment-services/casual-and-event-staffing',
 
   // Hospitality training (individuals and on-site training for employers)
   hospitalityTraining: () => '/hospitality-training',

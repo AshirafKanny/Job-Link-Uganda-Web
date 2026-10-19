@@ -62,7 +62,8 @@ export async function submitRecruitmentRequest(
   }
 
   const { consent: _consent, ...data } = parsed.data
-  const input = { ...data, sourcePath }
+  // Private clients of casual/event staffing (e.g. a couple) may leave the organisation empty.
+  const input = { ...data, businessName: data.businessName || 'Private client', sourcePath }
   try {
     // A double click, a retry after a slow network or a resubmitted page must not
     // create a second enquiry or a second email.

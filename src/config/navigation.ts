@@ -38,6 +38,7 @@ export const footerNav: { title: string; items: NavItem[] }[] = [
       { label: 'Hospitality recruitment', href: routes.service(serviceSlugs.hospitality) },
       { label: 'Restaurant staff recruitment', href: routes.service(serviceSlugs.restaurant) },
       { label: 'Request staff', href: routes.hireStaff() },
+      { label: 'Casual & event staffing', href: routes.casualStaffing() },
       { label: 'Workplace staff training', href: `${routes.hospitalityTraining()}#workplace` },
       { label: 'How we recruit', href: routes.howItWorks() },
     ],

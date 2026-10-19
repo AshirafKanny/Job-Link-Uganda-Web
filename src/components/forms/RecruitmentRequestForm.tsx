@@ -17,19 +17,24 @@ import { cn } from '@/lib/cn'
 import { routes } from '@/lib/routes'
 
 type Props = {
-  /** "recruitment" asks for staff to hire; "training" asks for existing staff to train. */
+  /** "recruitment": staff to hire; "training": existing staff to train; "staffing": casual/event staff. */
   kind?: EnquiryType
   services?: { slug: string; title: string }[]
   defaultService?: string
   /** Training mode: packages the employer can choose from. */
   trainingPackages?: { id: string; label: string }[]
   defaultPackage?: string
+  /** Staffing mode: kinds of casual/event staff. */
+  staffingTypes?: { id: string; label: string }[]
+  defaultStaffingType?: string
   turnstileSiteKey: string | null
 }
 
 /** Wording per mode; the fields and validation are shared. */
 const copy = {
   recruitment: {
+    businessLabel: 'Business name',
+    businessOptional: false,
     rolesLabel: 'Which roles do you need to fill?',
     rolesHint: 'For example: 2 waitresses and 1 cook for evening shifts',
     countLabel: 'Number of staff',
@@ -44,6 +49,8 @@ const copy = {
     back: { label: 'Back to recruitment services', href: routes.services() },
   },
   training: {
+    businessLabel: 'Business name',
+    businessOptional: false,
     rolesLabel: 'Which staff need training?',
     rolesHint: 'For example: 6 waiters, 2 supervisors and the kitchen team',
     countLabel: 'Number of staff',
@@ -56,6 +63,22 @@ const copy = {
     successTitle: 'Thank you, we have received your training request',
     successText: 'A member of our team will contact you to discuss your staff, the training you need and suitable dates. Please keep your phone nearby.',
     back: { label: 'Back to hospitality training', href: routes.hospitalityTraining() },
+  },
+  staffing: {
+    businessLabel: 'Company or organisation',
+    businessOptional: true,
+    rolesLabel: 'Tell us about the event or assignment',
+    rolesHint: 'For example: wedding reception for 300 guests, need ushers to welcome and seat guests',
+    countLabel: 'Workers needed',
+    locationLabel: 'Work location',
+    dateLabel: 'Date',
+    messageLabel: 'Additional instructions',
+    messageHint: 'Dress code, reporting time, duties, or anything else we should know',
+    consent: 'my staffing request',
+    submit: 'Request staff',
+    successTitle: 'Thank you, we have received your staffing request',
+    successText: 'A member of our team will contact you to discuss your event, the staff you need and the arrangements. Please keep your phone nearby.',
+    back: { label: 'Back to casual & event staffing', href: routes.casualStaffing() },
   },
 } as const
 
@@ -105,6 +128,8 @@ export function RecruitmentRequestForm({
   defaultService,
   trainingPackages = [],
   defaultPackage,
+  staffingTypes = [],
+  defaultStaffingType,
   turnstileSiteKey,
 }: Props) {
   const text = copy[kind]
@@ -175,8 +200,8 @@ export function RecruitmentRequestForm({
           <input id="contactName" name="contactName" autoComplete="name" required defaultValue={values.contactName}
             aria-invalid={invalid('contactName')} aria-describedby={describe('contactName')} className={cn(inputClass, border('contactName'))} />
         </Field>
-        <Field id="businessName" label="Business name" error={errors.businessName}>
-          <input id="businessName" name="businessName" autoComplete="organization" required defaultValue={values.businessName}
+        <Field id="businessName" label={text.businessLabel} optional={text.businessOptional} error={errors.businessName}>
+          <input id="businessName" name="businessName" autoComplete="organization" required={!text.businessOptional} defaultValue={values.businessName}
             aria-invalid={invalid('businessName')} aria-describedby={describe('businessName')} className={cn(inputClass, border('businessName'))} />
         </Field>
         <Field id="phone" label="Phone number" error={errors.phone}>
@@ -198,6 +223,18 @@ export function RecruitmentRequestForm({
             {trainingPackages.map((p) => (
               <option key={p.id} value={p.id}>
                 {p.label}
+              </option>
+            ))}
+          </select>
+        </Field>
+      ) : kind === 'staffing' ? (
+        <Field id="staffingType" label="Type of staff needed" optional error={errors.staffingType}>
+          <select id="staffingType" name="staffingType" defaultValue={values.staffingType ?? defaultStaffingType ?? ''}
+            aria-describedby={describe('staffingType')} className={cn(inputClass, border('staffingType'))}>
+            <option value="">Not sure yet, please advise</option>
+            {staffingTypes.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.label}
               </option>
             ))}
           </select>
@@ -235,6 +272,13 @@ export function RecruitmentRequestForm({
             aria-invalid={invalid('preferredStartDate')} aria-describedby={describe('preferredStartDate')} className={cn(inputClass, border('preferredStartDate'))} />
         </Field>
       </div>
+
+      {kind === 'staffing' && (
+        <Field id="workingHours" label="Expected duration or working hours" optional error={errors.workingHours}>
+          <input id="workingHours" name="workingHours" placeholder="e.g. 2 pm to 11 pm, one day" defaultValue={values.workingHours}
+            aria-invalid={invalid('workingHours')} aria-describedby={describe('workingHours')} className={cn(inputClass, border('workingHours'))} />
+        </Field>
+      )}
 
       <Field id="message" label={text.messageLabel} optional hint={text.messageHint} error={errors.message}>
         <textarea id="message" name="message" rows={4} defaultValue={values.message}

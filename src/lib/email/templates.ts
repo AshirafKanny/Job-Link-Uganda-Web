@@ -90,9 +90,11 @@ function renderText({ siteUrl, eyebrow, title, intro, rows = [], action, footerN
   return lines.join('\n')
 }
 
+export type EnquiryKind = 'recruitment' | 'training' | 'staffing'
+
 export type RecruitmentRequestEmailData = {
   id: number | string
-  enquiryType: 'recruitment' | 'training'
+  enquiryType: EnquiryKind
   contactName: string
   businessName: string
   phone: string
@@ -105,79 +107,130 @@ export type RecruitmentRequestEmailData = {
   serviceTitle: string | null
   /** Display name of the chosen training package, e.g. "Workplace Starter — UGX 1,200,000". */
   trainingPackageName: string | null
+  /** Casual/event staffing: display name of the staff type, and expected duration or hours. */
+  staffingTypeName?: string | null
+  workingHours?: string | null
   sourcePath: string
   submittedAt: Date
 }
 
+/** Per-type wording; the layout and escaping are shared. */
+function notificationVariant(data: RecruitmentRequestEmailData) {
+  switch (data.enquiryType) {
+    case 'training':
+      return {
+        eyebrow: 'New training enquiry',
+        title: `${data.businessName} wants hospitality training`,
+        subject: `NEW TRAINING ENQUIRY — ${data.businessName}`,
+        rows: [
+          { label: 'Training package', value: data.trainingPackageName ?? 'Not sure yet' },
+          { label: 'Staff to train', value: data.rolesNeeded, multiline: true },
+          { label: 'Number of staff', value: data.numberOfPositions?.toString() },
+          { label: 'Training location', value: data.location },
+          { label: 'Preferred start date', value: data.preferredStartDate },
+          { label: 'Training needs', value: data.message, multiline: true },
+        ],
+      }
+    case 'staffing':
+      return {
+        eyebrow: 'New staffing request',
+        title: `${data.businessName} needs casual or event staff`,
+        subject: `NEW STAFFING REQUEST — ${data.staffingTypeName ?? 'Casual & event staff'} — ${data.businessName}`,
+        rows: [
+          { label: 'Type of staff', value: data.staffingTypeName ?? 'Not sure yet' },
+          { label: 'Event or assignment', value: data.rolesNeeded, multiline: true },
+          { label: 'Number of workers', value: data.numberOfPositions?.toString() },
+          { label: 'Location', value: data.location },
+          { label: 'Date', value: data.preferredStartDate },
+          { label: 'Duration / working hours', value: data.workingHours },
+          { label: 'Additional instructions', value: data.message, multiline: true },
+        ],
+      }
+    default:
+      return {
+        eyebrow: 'New employer enquiry',
+        title: `${data.businessName} wants to hire staff`,
+        subject: `NEW EMPLOYER INQUIRY — ${data.businessName}`,
+        rows: [
+          { label: 'Recruitment service', value: data.serviceTitle },
+          { label: 'Roles needed', value: data.rolesNeeded, multiline: true },
+          { label: 'Number of positions', value: data.numberOfPositions?.toString() },
+          { label: 'Work location', value: data.location },
+          { label: 'Preferred start date', value: data.preferredStartDate },
+          { label: 'Message', value: data.message, multiline: true },
+        ],
+      }
+  }
+}
+
 /** Staff notification: sent to the team inbox, Reply-To the employer when they gave an email. */
 export function recruitmentRequestNotification(data: RecruitmentRequestEmailData, siteUrl: string) {
-  const training = data.enquiryType === 'training'
+  const variant = notificationVariant(data)
   const layout: Layout = {
     siteUrl,
-    eyebrow: training ? 'New training enquiry' : 'New employer enquiry',
-    title: training ? `${data.businessName} wants hospitality training` : `${data.businessName} wants to hire staff`,
+    eyebrow: variant.eyebrow,
+    title: variant.title,
     intro: data.email
       ? `Reply to this email to answer ${data.contactName} directly.`
       : `${data.contactName} did not leave an email address. Please call them on the number below.`,
     rows: [
-      { label: 'Business', value: data.businessName },
+      { label: data.enquiryType === 'staffing' ? 'Client / organisation' : 'Business', value: data.businessName },
       { label: 'Contact person', value: data.contactName },
       { label: 'Phone', value: data.phone },
       { label: 'Email', value: data.email },
-      ...(training
-        ? [
-            { label: 'Training package', value: data.trainingPackageName ?? 'Not sure yet' },
-            { label: 'Staff to train', value: data.rolesNeeded, multiline: true },
-            { label: 'Number of staff', value: data.numberOfPositions?.toString() },
-            { label: 'Training location', value: data.location },
-            { label: 'Preferred start date', value: data.preferredStartDate },
-            { label: 'Training needs', value: data.message, multiline: true },
-          ]
-        : [
-            { label: 'Recruitment service', value: data.serviceTitle },
-            { label: 'Roles needed', value: data.rolesNeeded, multiline: true },
-            { label: 'Number of positions', value: data.numberOfPositions?.toString() },
-            { label: 'Work location', value: data.location },
-            { label: 'Preferred start date', value: data.preferredStartDate },
-            { label: 'Message', value: data.message, multiline: true },
-          ]),
+      ...variant.rows,
       { label: 'Submitted', value: `${formatKampalaDateTime(data.submittedAt)} (Kampala time)` },
       { label: 'Sent from page', value: data.sourcePath },
       { label: 'Enquiry reference', value: `#${data.id}` },
     ],
     action: { label: 'Open in admin', url: `${siteUrl}/admin/collections/recruitment-requests/${data.id}` },
     footerNote:
-      'Sent automatically by the Job Link Uganda website. This email contains an employer’s personal details: do not forward it outside the team.',
+      'Sent automatically by the Job Link Uganda website. This email contains a client’s personal details: do not forward it outside the team.',
   }
   return {
-    subject: training ? `NEW TRAINING ENQUIRY — ${data.businessName}` : `NEW EMPLOYER INQUIRY — ${data.businessName}`,
+    subject: variant.subject,
     html: renderHtml(layout),
     text: renderText(layout),
   }
 }
 
+const confirmationCopy: Record<EnquiryKind, { title: string; intro: string; subject: string }> = {
+  recruitment: {
+    title: 'Thank you, we have received your recruitment request',
+    intro:
+      'A member of the Job Link Uganda recruitment team will review your request and contact you to discuss your requirements. You can reply to this email if you need to add anything.',
+    subject: 'We received your recruitment request — Job Link Uganda',
+  },
+  training: {
+    title: 'Thank you, we have received your training request',
+    intro:
+      'A member of the Job Link Uganda team will contact you to discuss your team, the training you need and suitable dates. You can reply to this email if you need to add anything.',
+    subject: 'We received your training request — Job Link Uganda',
+  },
+  staffing: {
+    title: 'Thank you, we have received your staffing request',
+    intro:
+      'A member of the Job Link Uganda team will contact you to discuss your event or assignment, the staff you need and the arrangements. You can reply to this email if you need to add anything.',
+    subject: 'We received your staffing request — Job Link Uganda',
+  },
+}
+
 /**
- * Confirmation to the employer. Deliberately contains NO visitor-supplied
+ * Confirmation to the client. Deliberately contains NO visitor-supplied
  * text (not even their name), so the form cannot be abused to send
  * arbitrary content to someone else's inbox.
  */
-export function recruitmentRequestConfirmation(siteUrl: string, enquiryType: 'recruitment' | 'training' = 'recruitment') {
-  const training = enquiryType === 'training'
+export function recruitmentRequestConfirmation(siteUrl: string, enquiryType: EnquiryKind = 'recruitment') {
+  const copy = confirmationCopy[enquiryType]
   const layout: Layout = {
     siteUrl,
     eyebrow: 'Enquiry received',
-    title: training
-      ? 'Thank you, we have received your training request'
-      : 'Thank you, we have received your recruitment request',
-    intro: training
-      ? 'A member of the Job Link Uganda team will contact you to discuss your team, the training you need and suitable dates. You can reply to this email if you need to add anything.'
-      : 'A member of the Job Link Uganda recruitment team will review your request and contact you to discuss your requirements. You can reply to this email if you need to add anything.',
+    title: copy.title,
+    intro: copy.intro,
     footerNote: 'You are receiving this because this email address was entered on the Job Link Uganda website. If that was not you, you can ignore this email.',
   }
   return {
-    subject: training
-      ? 'We received your training request — Job Link Uganda'
-      : 'We received your recruitment request — Job Link Uganda',
+    subject: copy.subject,
     html: renderHtml(layout),
     text: renderText(layout),
   }
